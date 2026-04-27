@@ -5,8 +5,6 @@ const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4000';
 export async function POST(request: NextRequest) {
   const body = await request.json() as { email: string; password: string };
 
-  console.log('Login request received with body:', body);
-
   const backendRes = await fetch(`${BACKEND_URL}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -47,7 +45,7 @@ export async function POST(request: NextRequest) {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60, // 7 days, matches JWT_REFRESH_EXPIRY
-        path: '/api/auth',
+        path: '/api',
       });
     }
   }

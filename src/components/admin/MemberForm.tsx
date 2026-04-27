@@ -1,17 +1,16 @@
 'use client';
 
+import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Upload, User, X } from 'lucide-react';
 import { memberSchema, type MemberFormValues } from '@/lib/schemas';
 import type { Member } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-// Switch imported but not currently used in MemberForm
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Switch } from '@/components/ui/switch';
 import {
   Form,
   FormControl,
@@ -37,6 +36,8 @@ interface MemberFormProps {
 
 export function MemberForm({ member, onSubmit }: MemberFormProps) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
 
   const form = useForm<MemberFormValues>({
     resolver: zodResolver(memberSchema),
@@ -62,6 +63,31 @@ export function MemberForm({ member, onSubmit }: MemberFormProps) {
     },
   });
 
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/proxy/uploads/image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+      const { fileUrl } = await res.json() as { fileUrl: string };
+      form.setValue('profileImage', fileUrl, { shouldDirty: true });
+    } catch {
+      toast({ title: 'Upload failed', description: 'Could not upload image', variant: 'destructive' });
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (values: MemberFormValues) => {
     try {
       await onSubmit(values);
@@ -76,6 +102,8 @@ export function MemberForm({ member, onSubmit }: MemberFormProps) {
       });
     }
   };
+
+  const profileImage = form.watch('profileImage');
 
   return (
     <Form {...form}>
@@ -177,11 +205,58 @@ export function MemberForm({ member, onSubmit }: MemberFormProps) {
             <FormField
               control={form.control}
               name="profileImage"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className="sm:col-span-2">
-                  <FormLabel>Profile Image URL</FormLabel>
+                  <FormLabel>Profile Photo</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://..." {...field} value={field.value ?? ''} />
+                    <div className="flex items-center gap-4">
+                      {profileImage ? (
+                        <Image
+                          src={profileImage}
+                          alt="Profile preview"
+                          width={64}
+                          height={64}
+                          className="h-16 w-16 rounded-full object-cover shrink-0"
+                          unoptimized
+                        />
+                      ) : (
+                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-muted">
+                          <User className="h-7 w-7 text-muted-foreground" />
+                        </div>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={uploading}
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          {uploading
+                            ? <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            : <Upload className="mr-2 h-4 w-4" />}
+                          {uploading ? 'Uploading…' : 'Upload Photo'}
+                        </Button>
+                        {profileImage && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            className="text-destructive hover:text-destructive"
+                            onClick={() => form.setValue('profileImage', '', { shouldDirty: true })}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+                        className="sr-only"
+                        onChange={handleImageUpload}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
