@@ -105,7 +105,7 @@ export function MemberForm({ member, onSubmit }: MemberFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Role *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value || 'researcher'}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue />
@@ -129,7 +129,7 @@ export function MemberForm({ member, onSubmit }: MemberFormProps) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Status *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} value={field.value || 'active'}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue />

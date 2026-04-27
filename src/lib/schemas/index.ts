@@ -1,11 +1,11 @@
 import { z } from 'zod';
 
 export const socialLinksSchema = z.object({
-  email: z.string().email().optional().or(z.literal('')),
-  linkedin: z.string().url().optional().or(z.literal('')),
-  googleScholar: z.string().url().optional().or(z.literal('')),
-  orcid: z.string().url().optional().or(z.literal('')),
-  personalSite: z.string().url().optional().or(z.literal('')),
+  email: z.union([z.string().email(), z.literal('')]).optional(),
+  linkedin: z.union([z.string().url(), z.literal('')]).optional(),
+  googleScholar: z.union([z.string().url(), z.literal('')]).optional(),
+  orcid: z.union([z.string().url(), z.literal('')]).optional(),
+  personalSite: z.union([z.string().url(), z.literal('')]).optional(),
 });
 
 export const memberSchema = z.object({
