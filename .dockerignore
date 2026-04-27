@@ -1,0 +1,12 @@
+.git
+.gitignore
+.next
+node_modules
+npm-debug.log*
+.env*.local
+.env
+playwright-report
+e2e
+README.md
+Dockerfile
+.dockerignore
