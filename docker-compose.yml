@@ -15,4 +15,4 @@ services:
 
 networks:
   monorepo-network:
-    external: true
+    driver: bridge
