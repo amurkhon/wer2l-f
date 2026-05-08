@@ -1,13 +1,18 @@
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: civil_lab_frontend
+  frontend:
+    container_name: wer2l-frontend
     restart: unless-stopped
+    image: node:20-alpine
     ports:
       - '3000:3000'
     environment:
       NODE_ENV: production
-      BACKEND_URL: http://civil_lab_app:4000
+      BACKEND_URL: http://main:4005
       NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    networks:
+      - monorepo-network
+    command: sh -c "npm install && npm run build && npm start"
+
+networks:
+  monorepo-network:
+    external: true
