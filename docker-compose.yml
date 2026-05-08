@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: civil_lab_frontend
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      BACKEND_URL: http://civil_lab_app:4000
+      NEXT_PUBLIC_SITE_URL: http://localhost:3000

@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../wer2L-backend"
+		},
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"js/ts.tsdk.path": "node_modules/typescript/lib"
+	}
+}

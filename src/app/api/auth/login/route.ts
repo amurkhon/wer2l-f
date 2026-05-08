@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   if (setCookieHeader) {
     const match = setCookieHeader.match(/refresh_token=([^;]+)/);
     if (match) {
-      response.cookies.set('refresh_token', match[1], {
+      response.cookies.set('refresh_token', match[1]!, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
