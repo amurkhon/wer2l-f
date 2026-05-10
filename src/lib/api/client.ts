@@ -17,7 +17,7 @@ export async function apiFetch<T>(path: string, opts: FetchOptions = {}): Promis
   let url: URL;
 
   if (typeof window === 'undefined') {
-    const base = process.env.BACKEND_URL ?? 'http://localhost:4000';
+    const base = process.env.BACKEND_URL ?? 'http://localhost:4005';
     url = new URL(path, base);
   } else {
     url = new URL(`/api/proxy${path}`, window.location.origin);

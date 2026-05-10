@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4000';
+const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4005';
 
 export async function POST(request: NextRequest) {
   const body = await request.json() as { email: string; password: string };
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
   response.cookies.set('access_token', data.accessToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.COOKIE_SECURE === 'true',
     sameSite: 'strict',
     maxAge: 60 * 15, // 15 minutes, matches JWT_ACCESS_EXPIRY
     path: '/',
@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
     if (match) {
       response.cookies.set('refresh_token', match[1]!, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.COOKIE_SECURE === 'true',
         sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60, // 7 days, matches JWT_REFRESH_EXPIRY
         path: '/api',

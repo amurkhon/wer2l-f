@@ -3,22 +3,25 @@ services:
   lab-ims-frontend:
     container_name: lab-ims-frontend
     restart: always
-    image: node:20.10.0
+    image: node:22
     ports:
       - 4006:4006
     environment:
       - PORT=4006
       - NODE_ENV=production
+      - BACKEND_URL=http://main:4005
+      - BACKEND_HOST=main
     env_file:
       - .env.local
     volumes:
       - ./:/usr/src/lab-ims-frontend
       - /usr/src/lab-ims-frontend/node_modules
+      - /usr/src/lab-ims-frontend/.next
     working_dir: /usr/src/lab-ims-frontend
     networks:
-      - client-network
-    command: bash -c "yarn install --frozen-lockfile && yarn build && yarn start"
+      - lab-ims-net
+    command: bash -c "NODE_ENV=development yarn install --frozen-lockfile && yarn build && cp -r public .next/standalone/public && cp -r .next/static .next/standalone/.next/static && node .next/standalone/server.js"
 
 networks:
-  client-network:
-    driver: bridge
+  lab-ims-net:
+    external: true

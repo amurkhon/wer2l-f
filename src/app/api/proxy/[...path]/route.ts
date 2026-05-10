@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4000';
+const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4005';
 
 async function proxyRequest(request: NextRequest, params: { path: string[] }) {
   const path = params.path.join('/');
@@ -49,7 +49,7 @@ async function proxyRequest(request: NextRequest, params: { path: string[] }) {
       const response = new NextResponse(retryData, { status: retryRes.status });
       response.cookies.set('access_token', newToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.COOKIE_SECURE === 'true',
         sameSite: 'strict',
         maxAge: 60 * 60,
         path: '/',

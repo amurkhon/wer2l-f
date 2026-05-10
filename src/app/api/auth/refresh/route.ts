@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4000';
+const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4005';
 
 export async function POST(request: NextRequest) {
   const refreshToken = request.cookies.get('refresh_token')?.value;
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
   const response = NextResponse.json({ ok: true });
   response.cookies.set('access_token', data.accessToken, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.COOKIE_SECURE === 'true',
     sameSite: 'strict',
     maxAge: 60 * 60,
     path: '/',
