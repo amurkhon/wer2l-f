@@ -3,7 +3,7 @@ import { worksApi } from '@/lib/api/works';
 import { membersApi } from '@/lib/api/members';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:4006';
 
   const [works, members] = await Promise.allSettled([
     worksApi.list({ status: 'published' }),
