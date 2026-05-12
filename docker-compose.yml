@@ -24,4 +24,5 @@ services:
 
 networks:
   lab-ims-net:
+    name: lab-ims-net
     driver: bridge
