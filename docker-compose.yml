@@ -9,8 +9,8 @@ services:
     environment:
       - PORT=4006
       - NODE_ENV=production
-      - BACKEND_URL=http://main:4005
-      - BACKEND_HOST=main
+      - BACKEND_URL=http://72.61.116.31:4005
+      - BACKEND_HOST=72.61.116.31
     env_file:
       - .env.local
     volumes:
