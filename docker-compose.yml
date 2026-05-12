@@ -24,4 +24,4 @@ services:
 
 networks:
   lab-ims-net:
-    external: true
+    driver: bridge
