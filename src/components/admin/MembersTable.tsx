@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { User } from 'lucide-react';
+import { SafeImage } from '@/components/shared/SafeImage';
 import type { Member } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/admin/DataTable';
@@ -20,19 +20,18 @@ const columns = [
     width: 'w-72',
     cell: (m: Member) => (
       <Link href={`/admin/members/${m._id}`} className="flex items-center gap-3 hover:text-primary">
-        {m.profileImage ? (
-          <Image
-            src={m.profileImage}
-            alt={m.fullName}
-            width={32}
-            height={32}
-            className="h-8 w-8 rounded-full object-cover"
-          />
-        ) : (
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
-            <User className="h-4 w-4 text-muted-foreground" />
-          </div>
-        )}
+        <SafeImage
+          src={m.profileImage}
+          alt={m.fullName}
+          width={32}
+          height={32}
+          className="h-8 w-8 rounded-full object-cover"
+          fallback={
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-muted">
+              <User className="h-4 w-4 text-muted-foreground" />
+            </div>
+          }
+        />
         <span className="font-medium">{m.fullName}</span>
       </Link>
     ),

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -15,6 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { WorkCard } from '@/components/public/WorkCard';
 import { LikeButton } from '@/components/public/LikeButton';
+import { SafeImage } from '@/components/shared/SafeImage';
 import {
   WORK_TYPE_LABELS,
   WORK_STATUS_LABELS,
@@ -106,12 +106,13 @@ export default async function WorkDetailPage({ params }: Props) {
         {/* Hero */}
         {work.coverImage && (
           <div className="mb-8 overflow-hidden rounded-xl">
-            <Image
+            <SafeImage
               src={work.coverImage}
               alt={work.title}
               width={900}
               height={450}
               className="h-72 w-full object-cover"
+              fallback={null}
             />
           </div>
         )}

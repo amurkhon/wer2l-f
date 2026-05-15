@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { User } from 'lucide-react';
+import { SafeImage } from '@/components/shared/SafeImage';
 import type { Member } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -15,19 +15,18 @@ export function MemberCard({ member }: MemberCardProps) {
     <Link href={`/members/${member._id}`}>
       <Card className="group h-full overflow-hidden transition-shadow hover:shadow-md">
         <div className="aspect-square overflow-hidden bg-muted">
-          {member.profileImage ? (
-            <Image
-              src={member.profileImage}
-              alt={member.fullName}
-              width={400}
-              height={400}
-              className="h-full w-full object-cover transition-transform group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <User className="h-20 w-20 text-muted-foreground/30" />
-            </div>
-          )}
+          <SafeImage
+            src={member.profileImage}
+            alt={member.fullName}
+            width={400}
+            height={400}
+            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            fallback={
+              <div className="flex h-full w-full items-center justify-center">
+                <User className="h-20 w-20 text-muted-foreground/30" />
+              </div>
+            }
+          />
         </div>
         <CardContent className="p-4">
           <h3 className="font-serif font-semibold leading-tight">{member.fullName}</h3>

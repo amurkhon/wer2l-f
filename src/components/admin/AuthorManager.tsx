@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import Image from 'next/image';
+import { SafeImage } from '@/components/shared/SafeImage';
 import {
   DndContext,
   closestCenter,
@@ -110,19 +110,18 @@ function SortableAuthorRow({
         <GripVertical className="h-4 w-4" />
       </button>
 
-      {author.member.profileImage ? (
-        <Image
-          src={author.member.profileImage}
-          alt={author.member.fullName}
-          width={32}
-          height={32}
-          className="h-8 w-8 rounded-full object-cover shrink-0"
-        />
-      ) : (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium">
-          {initials}
-        </div>
-      )}
+      <SafeImage
+        src={author.member.profileImage}
+        alt={author.member.fullName}
+        width={32}
+        height={32}
+        className="h-8 w-8 rounded-full object-cover shrink-0"
+        fallback={
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-muted text-xs font-medium">
+            {initials}
+          </div>
+        }
+      />
 
       <span className="w-40 min-w-0 shrink-0 truncate text-sm font-medium">
         {author.member.fullName}
@@ -375,19 +374,18 @@ export function AuthorManager({ workId, initialAuthors, allMembers }: AuthorMana
                       onSelect={() => handleAddMember(member)}
                       className="flex items-center gap-2"
                     >
-                      {member.profileImage ? (
-                        <Image
-                          src={member.profileImage}
-                          alt={member.fullName}
-                          width={24}
-                          height={24}
-                          className="h-6 w-6 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-muted">
-                          <User className="h-3 w-3" />
-                        </div>
-                      )}
+                      <SafeImage
+                        src={member.profileImage}
+                        alt={member.fullName}
+                        width={24}
+                        height={24}
+                        className="h-6 w-6 rounded-full object-cover"
+                        fallback={
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-muted">
+                            <User className="h-3 w-3" />
+                          </div>
+                        }
+                      />
                       <div>
                         <div className="text-sm font-medium">{member.fullName}</div>
                         <div className="text-xs text-muted-foreground capitalize">{member.role}</div>

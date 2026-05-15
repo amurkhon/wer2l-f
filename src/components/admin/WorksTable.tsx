@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { BookOpen } from 'lucide-react';
+import { SafeImage } from '@/components/shared/SafeImage';
 import type { Work, Category } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { DataTable } from '@/components/admin/DataTable';
@@ -21,19 +21,18 @@ export function WorksTable({ works, categoryMap }: WorksTableProps) {
       header: 'Work',
       cell: (w: Work) => (
         <Link href={`/admin/works/${w._id}`} className="flex items-center gap-3 hover:text-primary">
-          {w.coverImage ? (
-            <Image
-              src={w.coverImage}
-              alt={w.title}
-              width={48}
-              height={32}
-              className="h-8 w-12 rounded object-cover shrink-0"
-            />
-          ) : (
-            <div className="flex h-8 w-12 shrink-0 items-center justify-center rounded bg-muted">
-              <BookOpen className="h-4 w-4 text-muted-foreground" />
-            </div>
-          )}
+          <SafeImage
+            src={w.coverImage}
+            alt={w.title}
+            width={48}
+            height={32}
+            className="h-8 w-12 rounded object-cover shrink-0"
+            fallback={
+              <div className="flex h-8 w-12 shrink-0 items-center justify-center rounded bg-muted">
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+              </div>
+            }
+          />
           <span className="font-medium line-clamp-1">{w.title}</span>
         </Link>
       ),

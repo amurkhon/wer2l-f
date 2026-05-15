@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, BookOpen, FlaskConical } from 'lucide-react';
 import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,8 @@ import { MemberCard } from '@/components/public/MemberCard';
 import { WorkCard } from '@/components/public/WorkCard';
 import { worksApi } from '@/lib/api/works';
 import { membersApi } from '@/lib/api/members';
+import { highlightsApi } from '@/lib/api/highlights';
+import { HighlightCard } from '@/components/public/HighlightCard';
 import { roleSort, SITE_NAME, SITE_TAGLINE } from '@/lib/utils';
 
 export const metadata: Metadata = {
@@ -14,11 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const [allWorks, featuredWorks, allMembers, papers] = await Promise.allSettled([
+  const [allWorks, featuredWorks, allMembers, papers, highlightsResult] = await Promise.allSettled([
     worksApi.list({ status: 'published' }),
     worksApi.list({ featured: true, status: 'published' }),
     membersApi.list({ status: 'active' }),
     worksApi.list({ type: 'paper', status: 'published' }),
+    highlightsApi.list({ status: 'published' }),
   ]);
 
   const featured =
@@ -47,11 +51,24 @@ export default async function HomePage() {
   const totalWorks = allWorks.status === 'fulfilled' ? allWorks.value.length : 0;
   const totalMembers = allMembers.status === 'fulfilled' ? allMembers.value.length : 0;
 
+  const recentHighlights =
+    highlightsResult.status === 'fulfilled'
+      ? highlightsResult.value.slice(0, 3)
+      : [];
+
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-lab-900 via-lab-800 to-lab-700 px-4 py-24 text-white">
-        <div className="container mx-auto max-w-4xl text-center">
+      <section className="relative overflow-hidden px-4 py-24 text-white">
+        <Image
+          src="/images/Image 4.png"
+          alt="WER²L laboratory"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-lab-900/70" />
+        <div className="container relative mx-auto max-w-4xl text-center">
           <h1 className="font-serif text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
             {SITE_NAME}
           </h1>
@@ -89,6 +106,30 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Research Highlights */}
+      {recentHighlights.length > 0 && (
+        <section className="px-4 py-16">
+          <div className="container mx-auto">
+            <div className="mb-8 flex items-end justify-between">
+              <div>
+                <h2 className="font-serif text-3xl font-bold">Research Highlights</h2>
+                <p className="mt-1 text-muted-foreground">News, awards, and events from the lab</p>
+              </div>
+              <Button asChild variant="ghost">
+                <Link href="/highlights" className="flex items-center gap-2">
+                  View all <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {recentHighlights.map((h) => (
+                <HighlightCard key={h._id} highlight={h} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Featured Works */}
       {featured.length > 0 && (

@@ -55,6 +55,13 @@ export const AUTHORSHIP_ROLE_LABELS: Record<string, string> = {
   contributor: 'Contributor',
 };
 
+export const HIGHLIGHT_TYPE_LABELS: Record<string, string> = {
+  news: 'News',
+  award: 'Award',
+  publication: 'Publication',
+  event: 'Event',
+};
+
 export const CATEGORY_DOMAIN_LABELS: Record<string, string> = {
   structural: 'Structural',
   geotechnical: 'Geotechnical',
@@ -78,5 +85,5 @@ export function generateAnonymousId(): string {
   return crypto.randomUUID();
 }
 
-export const SITE_NAME = 'Civil Engineering Research Lab';
+export const SITE_NAME = 'Water Environment & Resource Recovery Lab';
 export const SITE_TAGLINE = 'Advancing Civil Engineering Through Research and Innovation';

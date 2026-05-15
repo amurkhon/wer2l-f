@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { BookOpen, Heart } from 'lucide-react';
+import { SafeImage } from '@/components/shared/SafeImage';
 import type { Work, AuthorshipWithMember } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -20,19 +20,18 @@ export function WorkCard({ work, authors = [], categoryName }: WorkCardProps) {
     <Link href={`/works/${work._id}`}>
       <Card className="group h-full overflow-hidden transition-shadow hover:shadow-md">
         <div className="aspect-video overflow-hidden bg-muted">
-          {work.coverImage ? (
-            <Image
-              src={work.coverImage}
-              alt={work.title}
-              width={600}
-              height={338}
-              className="h-full w-full object-cover transition-transform group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <BookOpen className="h-12 w-12 text-muted-foreground/30" />
-            </div>
-          )}
+          <SafeImage
+            src={work.coverImage}
+            alt={work.title}
+            width={600}
+            height={338}
+            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            fallback={
+              <div className="flex h-full w-full items-center justify-center">
+                <BookOpen className="h-12 w-12 text-muted-foreground/30" />
+              </div>
+            }
+          />
         </div>
         <CardContent className="p-4">
           <div className="mb-2 flex flex-wrap gap-1.5">

@@ -132,3 +132,29 @@ export interface MembersQuery {
   status?: MemberStatus;
   search?: string;
 }
+
+export type HighlightType = 'news' | 'award' | 'publication' | 'event';
+export type HighlightStatus = 'draft' | 'published';
+
+export interface Highlight {
+  _id: string;
+  title: string;
+  slug: string;
+  summary: string;
+  content: string;
+  coverImage?: string;
+  type: HighlightType;
+  status: HighlightStatus;
+  featured: boolean;
+  publishedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface HighlightsQuery {
+  [key: string]: string | boolean | undefined;
+  type?: HighlightType;
+  status?: HighlightStatus;
+  featured?: boolean;
+  search?: string;
+}

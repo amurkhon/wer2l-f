@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
@@ -15,6 +14,7 @@ import { worksApi } from '@/lib/api/works';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { WorkCard } from '@/components/public/WorkCard';
+import { SafeImage } from '@/components/shared/SafeImage';
 import {
   MEMBER_ROLE_LABELS,
   MEMBER_STATUS_LABELS,
@@ -84,19 +84,18 @@ export default async function MemberDetailPage({ params }: Props) {
       {/* Profile header */}
       <div className="flex flex-col gap-8 md:flex-row">
         <div className="shrink-0">
-          {member.profileImage ? (
-            <Image
-              src={member.profileImage}
-              alt={member.fullName}
-              width={200}
-              height={200}
-              className="h-48 w-48 rounded-xl object-cover"
-            />
-          ) : (
-            <div className="flex h-48 w-48 items-center justify-center rounded-xl bg-muted">
-              <span className="font-serif text-4xl font-bold text-muted-foreground">{initials}</span>
-            </div>
-          )}
+          <SafeImage
+            src={member.profileImage}
+            alt={member.fullName}
+            width={200}
+            height={200}
+            className="h-48 w-48 rounded-xl object-cover"
+            fallback={
+              <div className="flex h-48 w-48 items-center justify-center rounded-xl bg-muted">
+                <span className="font-serif text-4xl font-bold text-muted-foreground">{initials}</span>
+              </div>
+            }
+          />
         </div>
 
         <div className="flex-1 space-y-4">

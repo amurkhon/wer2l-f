@@ -8,6 +8,7 @@ import {
   BookOpen,
   Tag,
   UserCog,
+  Newspaper,
 } from 'lucide-react';
 import type { User } from '@/types';
 import { Logo } from '@/components/shared/Logo';
@@ -17,6 +18,7 @@ const NAV_ITEMS = [
   { href: '/admin/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { href: '/admin/members', icon: Users, label: 'Members' },
   { href: '/admin/works', icon: BookOpen, label: 'Works' },
+  { href: '/admin/highlights', icon: Newspaper, label: 'Highlights' },
   { href: '/admin/categories', icon: Tag, label: 'Categories' },
 ];
 

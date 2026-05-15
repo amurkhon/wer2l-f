@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import Image from 'next/image';
+import { SafeImage } from '@/components/shared/SafeImage';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -210,20 +210,19 @@ export function MemberForm({ member, onSubmit }: MemberFormProps) {
                   <FormLabel>Profile Photo</FormLabel>
                   <FormControl>
                     <div className="flex items-center gap-4">
-                      {profileImage ? (
-                        <Image
-                          src={profileImage}
-                          alt="Profile preview"
-                          width={64}
-                          height={64}
-                          className="h-16 w-16 rounded-full object-cover shrink-0"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-muted">
-                          <User className="h-7 w-7 text-muted-foreground" />
-                        </div>
-                      )}
+                      <SafeImage
+                        src={profileImage}
+                        alt="Profile preview"
+                        width={64}
+                        height={64}
+                        className="h-16 w-16 rounded-full object-cover shrink-0"
+                        unoptimized
+                        fallback={
+                          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-muted">
+                            <User className="h-7 w-7 text-muted-foreground" />
+                          </div>
+                        }
+                      />
                       <div className="flex items-center gap-2">
                         <Button
                           type="button"

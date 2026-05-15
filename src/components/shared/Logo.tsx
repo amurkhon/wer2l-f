@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { siteConfig } from '@/lib/config';
 
@@ -13,16 +14,15 @@ export function Logo({ className, inverted }: LogoProps) {
       href="/"
       className={cn('flex items-center gap-2 font-serif font-bold', className)}
     >
-      <div
-        className={cn(
-          'flex h-8 w-8 items-center justify-center rounded bg-primary text-sm font-bold text-primary-foreground',
-          inverted && 'bg-white text-lab-700',
-        )}
-      >
-        CE
-      </div>
+      <Image
+        src="/images/Image 1.png"
+        alt={siteConfig.shortName}
+        width={36}
+        height={36}
+        className="shrink-0"
+      />
       <span className={cn('hidden text-lg sm:block', inverted && 'text-white')}>
-        {siteConfig.shortName}
+        WER<sup className="text-xs">2</sup>L
       </span>
     </Link>
   );
