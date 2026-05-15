@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter, Source_Serif_4 } from 'next/font/google';
 import { Providers } from '@/components/providers';
-// @ts-ignore: CSS side-effect import declaration not found
+// @ts-expect-error: CSS side-effect import declaration not found
 import './globals.css';
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/utils';
 

@@ -13,5 +13,5 @@ export function SafeImage({ src, fallback, ...props }: SafeImageProps) {
 
   if (!src || failed) return <>{fallback}</>;
 
-  return <Image src={src} {...props} onError={() => setFailed(true)} />;
+  return <Image src={src} {...props} alt="" onError={() => setFailed(true)} />;
 }
