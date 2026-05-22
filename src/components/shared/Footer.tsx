@@ -41,7 +41,7 @@ export function Footer() {
                 <Github className="h-5 w-5" />
               </Link>
               <Link
-                href={siteConfig.social.linkedin}
+                href='https://www.linkedin.com/company/w-e-r2-lab'
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -49,24 +49,8 @@ export function Footer() {
               >
                 <Linkedin className="h-5 w-5" />
               </Link>
-              <Link
-                href={siteConfig.social.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-                className="text-muted-foreground hover:text-primary"
-              >
-                <Twitter className="h-5 w-5" />
-              </Link>
-              <Link
-                href={`mailto:${siteConfig.social.email}`}
-                aria-label="Email"
-                className="text-muted-foreground hover:text-primary"
-              >
-                <Mail className="h-5 w-5" />
-              </Link>
             </div>
-            <p className="text-sm text-muted-foreground">{siteConfig.social.email}</p>
+            <p className="text-sm text-muted-foreground">Tel: 051-200-5738</p>
           </div>
         </div>
 

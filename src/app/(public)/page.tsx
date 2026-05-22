@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, BookOpen, FlaskConical } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import type { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { MemberCard } from '@/components/public/MemberCard';
@@ -91,7 +91,7 @@ export default async function HomePage() {
 
       {/* Stats */}
       <section className="border-b bg-muted/30 px-4 py-10">
-        <div className="container mx-auto grid max-w-3xl grid-cols-3 gap-6 text-center">
+        <div className="container mx-auto grid max-w-2xl grid-cols-2 gap-6 text-center">
           <div>
             <div className="font-serif text-4xl font-bold text-primary">{totalMembers}+</div>
             <div className="mt-1 text-sm text-muted-foreground">Researchers</div>
@@ -99,10 +99,6 @@ export default async function HomePage() {
           <div>
             <div className="font-serif text-4xl font-bold text-primary">{totalWorks}+</div>
             <div className="mt-1 text-sm text-muted-foreground">Publications & Projects</div>
-          </div>
-          <div>
-            <div className="font-serif text-4xl font-bold text-primary">6</div>
-            <div className="mt-1 text-sm text-muted-foreground">Research Domains</div>
           </div>
         </div>
       </section>
@@ -215,34 +211,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* Research Domains */}
-      <section className="bg-lab-950 px-4 py-16 text-white">
-        <div className="container mx-auto text-center">
-          <h2 className="font-serif text-3xl font-bold">Research Domains</h2>
-          <p className="mt-2 text-lab-300">
-            Our interdisciplinary approach covers the full spectrum of civil engineering
-          </p>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {[
-              { name: 'Structural Engineering', icon: FlaskConical },
-              { name: 'Geotechnical Engineering', icon: FlaskConical },
-              { name: 'Transportation Engineering', icon: FlaskConical },
-              { name: 'Hydraulic Engineering', icon: FlaskConical },
-              { name: 'Materials Science', icon: FlaskConical },
-              { name: 'Environmental Engineering', icon: FlaskConical },
-            ].map((domain) => (
-              <div
-                key={domain.name}
-                className="rounded-lg border border-lab-700 bg-lab-900/50 p-6 text-left"
-              >
-                <domain.icon className="mb-3 h-6 w-6 text-lab-400" />
-                <h3 className="font-semibold text-lab-100">{domain.name}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </>
   );
 }
