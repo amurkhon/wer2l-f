@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
     ];
   },
   images: {
+    // Allow SVG uploads to render through the optimizer. SVGs are admin-uploaded
+    // (trusted), and these options sandbox the response to neutralize embedded scripts.
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     remotePatterns: [
       {
         protocol: 'http',

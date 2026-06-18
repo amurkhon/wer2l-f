@@ -30,7 +30,8 @@ export interface Work {
   _id: string;
   title: string;
   type: WorkType;
-  categoryId: string;
+  categoryId?: string;
+  paperUrl?: string;
   description?: string;
   coverImage?: string;
   status: WorkStatus;

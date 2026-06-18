@@ -5,7 +5,6 @@ import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { EditWorkForm } from '@/components/admin/EditWorkForm';
 import { worksApi } from '@/lib/api/works';
-import { categoriesApi } from '@/lib/api/categories';
 import { membersApi } from '@/lib/api/members';
 import { ApiError } from '@/lib/api/client';
 
@@ -29,10 +28,7 @@ export default async function EditWorkPage({ params }: Props) {
     throw err;
   }
 
-  const [categories, members] = await Promise.all([
-    categoriesApi.list(),
-    membersApi.list({}),
-  ]);
+  const members = await membersApi.list({});
 
   return (
     <div className="max-w-3xl space-y-6">
@@ -45,7 +41,7 @@ export default async function EditWorkPage({ params }: Props) {
         </Button>
         <h1 className="font-serif text-3xl font-bold">Edit Work</h1>
       </div>
-      <EditWorkForm work={work} categories={categories} allMembers={members} />
+      <EditWorkForm work={work} allMembers={members} />
     </div>
   );
 }

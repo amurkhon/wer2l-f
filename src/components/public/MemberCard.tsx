@@ -20,7 +20,7 @@ export function MemberCard({ member }: MemberCardProps) {
             alt={member.fullName}
             width={400}
             height={400}
-            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            className="h-full w-full object-contain transition-transform group-hover:scale-105"
             fallback={
               <div className="flex h-full w-full items-center justify-center">
                 <User className="h-20 w-20 text-muted-foreground/30" />

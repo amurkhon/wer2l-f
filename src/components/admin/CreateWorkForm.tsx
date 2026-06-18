@@ -1,14 +1,9 @@
 'use client';
 
-import type { Category } from '@/types';
 import { WorkForm } from '@/components/admin/WorkForm';
 import type { WorkFormValues } from '@/lib/schemas';
 
-interface CreateWorkFormProps {
-  categories: Category[];
-}
-
-export function CreateWorkForm({ categories }: CreateWorkFormProps) {
+export function CreateWorkForm() {
   const handleSubmit = async (values: WorkFormValues) => {
     await fetch('/api/proxy/works', {
       method: 'POST',
@@ -19,5 +14,5 @@ export function CreateWorkForm({ categories }: CreateWorkFormProps) {
     });
   };
 
-  return <WorkForm categories={categories} onSubmit={handleSubmit} />;
+  return <WorkForm onSubmit={handleSubmit} />;
 }

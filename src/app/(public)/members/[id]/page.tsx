@@ -123,7 +123,7 @@ export default async function MemberDetailPage({ params }: Props) {
           </div>
 
           {member.biography && (
-            <p className="text-muted-foreground leading-relaxed">{member.biography}</p>
+            <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{member.biography}</p>
           )}
 
           {/* Social links */}

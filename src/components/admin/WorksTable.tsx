@@ -47,7 +47,7 @@ export function WorksTable({ works, categoryMap }: WorksTableProps) {
     {
       key: 'category',
       header: 'Category',
-      cell: (w: Work) => categoryMap[w.categoryId]?.name ?? '—',
+      cell: (w: Work) => (w.categoryId ? categoryMap[w.categoryId]?.name : undefined) ?? '—',
     },
     {
       key: 'status',

@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import { workSchema, type WorkFormValues } from '@/lib/schemas';
-import type { Work, Category } from '@/types';
+import type { Work } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -31,12 +31,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface WorkFormProps {
   work?: Work;
-  categories: Category[];
   onSubmit: (values: WorkFormValues) => Promise<void>;
   children?: React.ReactNode;
 }
 
-export function WorkForm({ work, categories, onSubmit, children }: WorkFormProps) {
+export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
   const router = useRouter();
 
   const form = useForm<WorkFormValues>({
@@ -44,7 +43,7 @@ export function WorkForm({ work, categories, onSubmit, children }: WorkFormProps
     defaultValues: {
       title: work?.title ?? '',
       type: work?.type ?? 'paper',
-      categoryId: work?.categoryId ?? '',
+      paperUrl: work?.paperUrl ?? '',
       description: work?.description ?? '',
       coverImage: work?.coverImage ?? '',
       status: work?.status ?? 'in_progress',
@@ -118,24 +117,19 @@ export function WorkForm({ work, categories, onSubmit, children }: WorkFormProps
 
             <FormField
               control={form.control}
-              name="categoryId"
+              name="paperUrl"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category *</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((cat) => (
-                        <SelectItem key={cat._id} value={cat._id}>
-                          {cat.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Paper Link</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="url"
+                      placeholder="https://doi.org/..."
+                      {...field}
+                      value={field.value ?? ''}
+                    />
+                  </FormControl>
+                  <FormDescription>Link to the published paper.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

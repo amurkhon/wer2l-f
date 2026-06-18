@@ -251,7 +251,7 @@ export function MemberForm({ member, onSubmit }: MemberFormProps) {
                       <input
                         ref={fileInputRef}
                         type="file"
-                        accept="image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+                        accept="image/*"
                         className="sr-only"
                         onChange={handleImageUpload}
                       />

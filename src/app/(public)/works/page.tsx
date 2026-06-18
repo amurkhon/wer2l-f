@@ -82,7 +82,7 @@ export default async function WorksPage({ searchParams }: WorksPageProps) {
                   <WorkCard
                     key={work._id}
                     work={work}
-                    categoryName={categoryMap[work.categoryId]?.name}
+                    categoryName={work.categoryId ? categoryMap[work.categoryId]?.name : undefined}
                   />
                 ))}
               </div>

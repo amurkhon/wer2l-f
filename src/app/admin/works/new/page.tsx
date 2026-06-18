@@ -3,16 +3,13 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CreateWorkForm } from '@/components/admin/CreateWorkForm';
-import { categoriesApi } from '@/lib/api/categories';
 
 export const metadata: Metadata = {
   title: 'Add Work — Admin',
   robots: { index: false },
 };
 
-export default async function NewWorkPage() {
-  const categories = await categoriesApi.list();
-
+export default function NewWorkPage() {
   return (
     <div className="max-w-3xl space-y-6">
       <div className="flex items-center gap-3">
@@ -24,7 +21,7 @@ export default async function NewWorkPage() {
         </Button>
         <h1 className="font-serif text-3xl font-bold">Add Work</h1>
       </div>
-      <CreateWorkForm categories={categories} />
+      <CreateWorkForm />
     </div>
   );
 }
