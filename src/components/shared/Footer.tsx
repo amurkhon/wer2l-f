@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
+import { Github, Linkedin } from 'lucide-react';
 import { Logo } from '@/components/shared/Logo';
 import { siteConfig } from '@/lib/config';
 
