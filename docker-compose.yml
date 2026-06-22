@@ -20,7 +20,7 @@ services:
     working_dir: /usr/src/lab-ims-frontend
     networks:
       - lab-ims-net
-    command: bash -c "NODE_ENV=development yarn install --frozen-lockfile && yarn build && cp -r public .next/standalone/public && cp -r .next/static .next/standalone/.next/static && node .next/standalone/server.js"
+    command: bash -c "NODE_ENV=development yarn install --frozen-lockfile --network-timeout 600000 && yarn build && cp -r public .next/standalone/public && cp -r .next/static .next/standalone/.next/static && node .next/standalone/server.js"
 
 networks:
   lab-ims-net:
