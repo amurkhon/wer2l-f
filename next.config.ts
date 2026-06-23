@@ -4,6 +4,8 @@ const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:4005';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  // Hide the Next.js dev indicator (bottom-left logo button)
+  devIndicators: false,
   async rewrites() {
     return [
       {

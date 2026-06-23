@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { WorkCard } from '@/components/public/WorkCard';
 import { WorkFilters } from '@/components/public/WorkFilters';
+import { Reveal } from '@/components/shared/Reveal';
 import { worksApi } from '@/lib/api/works';
 import { categoriesApi } from '@/lib/api/categories';
 import type { WorkType, WorkStatus } from '@/types';
@@ -49,13 +50,19 @@ export default async function WorksPage({ searchParams }: WorksPageProps) {
   const totalPages = Math.ceil(allWorks.length / PAGE_SIZE);
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="mb-8">
-        <h1 className="font-serif text-4xl font-bold">Works</h1>
-        <p className="mt-2 text-muted-foreground">
-          {allWorks.length} publication{allWorks.length !== 1 ? 's' : ''} and projects
+    <div className="mx-auto max-w-[1200px] px-6 pb-24 pt-16 sm:px-10">
+      <Reveal className="mb-9">
+        <div className="mb-3 text-[13px] font-bold uppercase tracking-[0.16em] text-lab-600">
+          Research Output
+        </div>
+        <h1 className="font-serif text-[clamp(40px,5.5vw,64px)] font-bold tracking-[-0.025em] text-[#13142e]">
+          Works &amp; Publications
+        </h1>
+        <p className="mt-3.5 max-w-[560px] text-[18px] leading-[1.6] text-[#62677e]">
+          {allWorks.length} project{allWorks.length !== 1 ? 's' : ''} and peer-reviewed papers
+          spanning hydraulics, climate adaptation and resilient infrastructure.
         </p>
-      </div>
+      </Reveal>
 
       <div className="flex flex-col gap-8 md:flex-row">
         <aside className="md:w-56 shrink-0">
@@ -77,13 +84,14 @@ export default async function WorksPage({ searchParams }: WorksPageProps) {
             </div>
           ) : (
             <>
-              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {paginatedWorks.map((work) => (
-                  <WorkCard
-                    key={work._id}
-                    work={work}
-                    categoryName={work.categoryId ? categoryMap[work.categoryId]?.name : undefined}
-                  />
+              <div className="grid gap-[26px] sm:grid-cols-2 lg:grid-cols-3">
+                {paginatedWorks.map((work, i) => (
+                  <Reveal key={work._id} delay={`${(i % 9) * 60}ms`} className="h-full">
+                    <WorkCard
+                      work={work}
+                      categoryName={work.categoryId ? categoryMap[work.categoryId]?.name : undefined}
+                    />
+                  </Reveal>
                 ))}
               </div>
 

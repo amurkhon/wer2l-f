@@ -87,3 +87,196 @@
     @apply font-serif;
   }
 }
+
+/* ============================================================
+   WER²L Animated design system
+   ============================================================ */
+@layer utilities {
+  /* Scroll-reveal: elements start hidden, add .in (via IntersectionObserver) to animate */
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 0.9s cubic-bezier(0.16, 0.84, 0.44, 1),
+      transform 0.9s cubic-bezier(0.16, 0.84, 0.44, 1);
+    will-change: opacity, transform;
+  }
+  [data-reveal].in {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}
+
+@keyframes heroUp {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes auroraA {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(7%, 5%) scale(1.18);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+@keyframes auroraB {
+  0% {
+    transform: translate(0, 0) scale(1.1);
+  }
+  50% {
+    transform: translate(-8%, 4%) scale(1);
+  }
+  100% {
+    transform: translate(0, 0) scale(1.1);
+  }
+}
+@keyframes auroraC {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(5%, -7%) scale(1.2);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+@keyframes gridShift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 64px 64px;
+  }
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes floatY {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(9px);
+  }
+}
+@keyframes ringPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes wheel {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: -500px 0;
+  }
+  to {
+    background-position: 500px 0;
+  }
+}
+
+.anim-hero-bg::-webkit-scrollbar,
+.app-scroll::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.app-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.app-scroll::-webkit-scrollbar-thumb {
+  background: #c8cae4;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.anim-hero-up {
+  animation: heroUp 0.9s cubic-bezier(0.16, 0.84, 0.44, 1) both;
+}
+.anim-aurora-a {
+  animation: auroraA 15s ease-in-out infinite;
+}
+.anim-aurora-b {
+  animation: auroraB 19s ease-in-out infinite;
+}
+.anim-aurora-c {
+  animation: auroraC 17s ease-in-out infinite;
+}
+.anim-grid-shift {
+  animation: gridShift 14s linear infinite;
+}
+.anim-marquee {
+  animation: marquee 30s linear infinite;
+}
+.anim-float-y {
+  animation: floatY 2.6s ease-in-out infinite;
+}
+.anim-ring-pulse {
+  animation: ringPulse 2.2s ease-out infinite;
+}
+.anim-wheel {
+  animation: wheel 1.8s ease-in-out infinite;
+}
+.anim-shimmer {
+  background: linear-gradient(100deg, #eef0f7 30%, #f7f8fc 50%, #eef0f7 70%);
+  background-size: 500px 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-hero-up,
+  .anim-aurora-a,
+  .anim-aurora-b,
+  .anim-aurora-c,
+  .anim-grid-shift,
+  .anim-marquee,
+  .anim-float-y,
+  .anim-ring-pulse,
+  .anim-wheel,
+  .anim-shimmer {
+    animation: none;
+  }
+}
