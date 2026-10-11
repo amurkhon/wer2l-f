@@ -25,6 +25,7 @@ export const workSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   type: z.enum(['paper', 'project', 'patent', 'thesis']),
   paperUrl: z.union([z.string().url('Enter a valid URL'), z.literal('')]).optional(),
+  pdfFile: z.string().optional(),
   description: z.string().optional(),
   coverImage: z.string().optional(),
   status: z.enum(['in_progress', 'published', 'archived']).default('in_progress'),

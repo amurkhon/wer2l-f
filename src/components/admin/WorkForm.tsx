@@ -1,9 +1,10 @@
 'use client';
 
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { FileText, Loader2, Upload, X } from 'lucide-react';
 import { workSchema, type WorkFormValues } from '@/lib/schemas';
 import type { Work } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -37,6 +38,8 @@ interface WorkFormProps {
 
 export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
   const router = useRouter();
+  const pdfInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingPdf, setUploadingPdf] = useState(false);
 
   const form = useForm<WorkFormValues>({
     resolver: zodResolver(workSchema),
@@ -44,6 +47,7 @@ export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
       title: work?.title ?? '',
       type: work?.type ?? 'paper',
       paperUrl: work?.paperUrl ?? '',
+      pdfFile: work?.pdfFile ?? '',
       description: work?.description ?? '',
       coverImage: work?.coverImage ?? '',
       status: work?.status ?? 'in_progress',
@@ -53,6 +57,42 @@ export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
       featured: work?.featured ?? false,
     },
   });
+
+  const handlePdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingPdf(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/proxy/uploads/pdf', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = (await res.json().catch(() => ({}))) as { message?: unknown };
+        throw new Error(typeof err.message === 'string' ? err.message : 'Could not upload PDF');
+      }
+      const { fileUrl } = await res.json() as { fileUrl: string };
+      form.setValue('pdfFile', fileUrl, { shouldDirty: true });
+    } catch (err) {
+      toast({
+        title: 'Upload failed',
+        description: err instanceof Error ? err.message : 'Could not upload PDF',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploadingPdf(false);
+      if (pdfInputRef.current) pdfInputRef.current.value = '';
+    }
+  };
+
+  const pdfFile = form.watch('pdfFile');
+  // Stored names are "<uuid>-<original name>.pdf"; show only the original part.
+  const pdfFileName = pdfFile?.split('/').pop()?.replace(/^[0-9a-f-]{36}-/i, '');
 
   const handleSubmit = async (values: WorkFormValues) => {
     try {
@@ -181,6 +221,68 @@ export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
                   <FormControl>
                     <Input placeholder="https://..." {...field} value={field.value ?? ''} />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="pdfFile"
+              render={() => (
+                <FormItem className="sm:col-span-2">
+                  <FormLabel>PDF File</FormLabel>
+                  <FormControl>
+                    <div className="flex flex-wrap items-center gap-3">
+                      {pdfFile && (
+                        <a
+                          href={pdfFile}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex min-w-0 items-center gap-2 rounded-md border px-3 py-2 text-sm hover:bg-accent"
+                        >
+                          <FileText className="h-4 w-4 shrink-0 text-muted-foreground" />
+                          <span className="truncate">{pdfFileName}</span>
+                        </a>
+                      )}
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={uploadingPdf}
+                          onClick={() => pdfInputRef.current?.click()}
+                        >
+                          {uploadingPdf
+                            ? <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            : <Upload className="mr-2 h-4 w-4" />}
+                          {uploadingPdf ? 'Uploading…' : pdfFile ? 'Replace PDF' : 'Upload PDF'}
+                        </Button>
+                        {pdfFile && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Remove PDF"
+                            className="text-destructive hover:text-destructive"
+                            onClick={() => form.setValue('pdfFile', '', { shouldDirty: true })}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <input
+                        ref={pdfInputRef}
+                        type="file"
+                        accept="application/pdf,.pdf"
+                        className="sr-only"
+                        onChange={handlePdfUpload}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormDescription>
+                    Visitors can download this file from the publication page.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -32,6 +32,7 @@ export interface Work {
   type: WorkType;
   categoryId?: string;
   paperUrl?: string;
+  pdfFile?: string;
   description?: string;
   coverImage?: string;
   status: WorkStatus;
@@ -60,6 +61,7 @@ export interface AuthorshipWithMember extends Authorship {
 export interface WorkWithAuthors extends Work {
   category: Category;
   authors: AuthorshipWithMember[];
+  attachments?: Attachment[];
 }
 
 export type CategoryDomain =

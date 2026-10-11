@@ -9,24 +9,43 @@ export const metadata: Metadata = {
   description: `Learn about the ${siteConfig.name}.`,
 };
 
+// One card per topic in the home-page Marquee; copy is drawn from our published papers.
 const FOCUS = [
   {
     icon: '◇',
-    title: 'Hydraulics & Hydrology',
-    body: 'Physics-based and data-driven modelling of water flow, floods and sediment.',
+    title: 'Water Quality',
+    body: 'Raising dissolved oxygen in water. Our multistage vortex aerator uses staged vortex flow and high-purity oxygen to reach over 40 mg/L in 60 minutes.',
     iconStyle: 'bg-lab-50 text-lab-700',
   },
   {
     icon: '○',
-    title: 'Climate Resilience',
-    body: 'Adaptation strategies and risk metrics for infrastructure under uncertainty.',
-    iconStyle: 'bg-emerald-50 text-emerald-700',
+    title: 'Digital Twins',
+    body: 'Models that mirror real treatment systems. Our gas transfer model, built on oxygen mass and molar balances, simulates dissolved-oxygen change inside the aerator.',
+    iconStyle: 'bg-sky-50 text-sky-700',
   },
   {
     icon: '□',
-    title: 'Sustainable Materials',
-    body: 'Low-carbon concrete and durable design for long-lived structures.',
+    title: 'Water Resources',
+    body: 'Treatment tested on real water bodies. Our biochar removes 76.5–97.3% of phosphate from lake, river and sewage water, and stays effective from pH 2 to 12.',
+    iconStyle: 'bg-teal-50 text-teal-700',
+  },
+  {
+    icon: '△',
+    title: 'Sustainability',
+    body: 'Turning waste into treatment media. Mussel shells and spent coffee grounds become a calcium-rich biochar that captures up to 375.6 mg of phosphate per gram.',
+    iconStyle: 'bg-emerald-50 text-emerald-700',
+  },
+  {
+    icon: '◎',
+    title: 'Machine Learning',
+    body: 'Data-driven models built on our adsorption and oxygen-transfer experiments, to predict treatment performance across temperatures, pressures and water conditions.',
     iconStyle: 'bg-violet-50 text-violet-700',
+  },
+  {
+    icon: '◈',
+    title: 'Environmental',
+    body: 'Closing the nutrient loop from water to soil. Phosphate-laden biochar works as a slow-release fertilizer, lifting radish dry biomass by 63.1% and improving soil pH.',
+    iconStyle: 'bg-amber-50 text-amber-700',
   },
 ];
 
@@ -59,7 +78,7 @@ export default function AboutPage() {
         {FOCUS.map((f, i) => (
           <Reveal
             key={f.title}
-            delay={`${i * 90}ms`}
+            delay={`${(i % 3) * 90}ms`}
             className="rounded-[20px] border border-[#ececf5] bg-white p-[30px] transition-[transform,box-shadow] duration-[400ms] hover:-translate-y-1.5 hover:shadow-[0_24px_50px_-24px_rgba(40,36,120,.3)]"
           >
             <div

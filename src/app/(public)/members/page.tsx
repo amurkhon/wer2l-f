@@ -62,9 +62,9 @@ function MemberGridSkeleton() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="overflow-hidden rounded-lg border">
-          <Skeleton className="aspect-square w-full" />
-          <div className="p-4 space-y-2">
+        <div key={i} className="rounded-[20px] border p-3.5">
+          <Skeleton className="aspect-[4/5] w-full rounded-[14px]" />
+          <div className="space-y-2 px-2 pb-3 pt-5">
             <Skeleton className="h-5 w-3/4" />
             <Skeleton className="h-4 w-1/2" />
           </div>

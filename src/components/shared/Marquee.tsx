@@ -1,12 +1,10 @@
 const TOPICS = [
-  'Flood Resilience',
-  'Hydraulics',
+  'Water Quality',
   'Digital Twins',
-  'Coastal Systems',
-  'Sustainable Concrete',
-  'Climate Adaptation',
-  'Smart Water Networks',
-  'Sediment Transport',
+  'Water Resources',
+  'Sustainability',
+  'Machine Learning',
+  'Environmental',
 ];
 
 /**

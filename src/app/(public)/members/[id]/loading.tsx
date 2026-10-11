@@ -5,7 +5,7 @@ export default function MemberDetailLoading() {
     <div className="container mx-auto max-w-4xl px-4 py-12">
       {/* Profile header */}
       <div className="flex flex-col gap-8 md:flex-row">
-        <Skeleton className="h-48 w-48 shrink-0 rounded-xl" />
+        <Skeleton className="aspect-[4/5] w-56 shrink-0 rounded-[14px]" />
         <div className="flex-1 space-y-4">
           <div>
             <Skeleton className="h-9 w-64" />

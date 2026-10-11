@@ -15,9 +15,9 @@ function WorksGridSkeleton() {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="overflow-hidden rounded-lg border">
-          <Skeleton className="aspect-video w-full" />
-          <div className="space-y-2 p-4">
+        <div key={i} className="rounded-[20px] border p-3.5">
+          <Skeleton className="aspect-video w-full rounded-[14px]" />
+          <div className="space-y-2 px-2.5 pb-2.5 pt-5">
             <Skeleton className="h-5 w-full" />
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-4 w-1/2" />

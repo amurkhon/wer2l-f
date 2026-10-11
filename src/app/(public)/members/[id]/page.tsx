@@ -14,7 +14,7 @@ import { worksApi } from '@/lib/api/works';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { WorkCard } from '@/components/public/WorkCard';
-import { SafeImage } from '@/components/shared/SafeImage';
+import { MemberPhoto } from '@/components/public/MemberPhoto';
 import {
   MEMBER_ROLE_LABELS,
   MEMBER_STATUS_LABELS,
@@ -72,29 +72,17 @@ export default async function MemberDetailPage({ params }: Props) {
     { paper: [], project: [], patent: [], thesis: [] },
   );
 
-  const initials = member.fullName
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-
   return (
     <div className="container mx-auto max-w-4xl px-4 py-12">
       {/* Profile header */}
       <div className="flex flex-col gap-8 md:flex-row">
         <div className="shrink-0">
-          <SafeImage
+          <MemberPhoto
             src={member.profileImage}
-            alt={member.fullName}
-            width={200}
-            height={200}
-            className="h-48 w-48 rounded-xl object-cover"
-            fallback={
-              <div className="flex h-48 w-48 items-center justify-center rounded-xl bg-muted">
-                <span className="font-serif text-4xl font-bold text-muted-foreground">{initials}</span>
-              </div>
-            }
+            name={member.fullName}
+            sizes="200px"
+            priority
+            className="w-56"
           />
         </div>
 

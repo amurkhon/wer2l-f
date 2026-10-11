@@ -5,16 +5,16 @@ import {
   Calendar,
   Download,
   ArrowLeft,
+  ExternalLink,
 } from 'lucide-react';
 import { worksApi } from '@/lib/api/works';
-import { uploadsApi } from '@/lib/api/uploads';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { WorkCard } from '@/components/public/WorkCard';
 import { LikeButton } from '@/components/public/LikeButton';
-import { SafeImage } from '@/components/shared/SafeImage';
+import { MatteFrame } from '@/components/shared/MatteFrame';
 import {
   WORK_TYPE_LABELS,
   WORK_STATUS_LABELS,
@@ -62,18 +62,19 @@ export default async function WorkDetailPage({ params }: Props) {
     throw err;
   }
 
-  const [attachmentsResult, relatedResult] = await Promise.allSettled([
-    uploadsApi.listByWork(id),
-    worksApi.list({ category: work.categoryId, status: 'published' }),
-  ]);
+  const relatedWorks = await worksApi
+    .list({ category: work.categoryId, status: 'published' })
+    .then((works) => works.filter((w) => w._id !== id).slice(0, 4))
+    .catch(() => []);
 
-  const attachments = attachmentsResult.status === 'fulfilled' ? attachmentsResult.value : [];
-  const relatedWorks =
-    relatedResult.status === 'fulfilled'
-      ? relatedResult.value.filter((w) => w._id !== id).slice(0, 4)
-      : [];
+  // Comes with the public work response; GET /uploads/work/:id is admin-only.
+  const attachments = work.attachments ?? [];
 
   const sortedAuthors = [...work.authors].sort((a, b) => a.order - b.order);
+
+  // Only link http(s) URLs — the backend accepts any string for paperUrl.
+  const paperHref =
+    work.paperUrl && /^https?:\/\//i.test(work.paperUrl) ? work.paperUrl : undefined;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -105,16 +106,16 @@ export default async function WorkDetailPage({ params }: Props) {
 
         {/* Hero */}
         {work.coverImage && (
-          <div className="mb-8 overflow-hidden rounded-xl">
-            <SafeImage
-              src={work.coverImage}
-              alt={work.title}
-              width={900}
-              height={450}
-              className="h-72 w-full object-cover"
-              fallback={null}
-            />
-          </div>
+          <MatteFrame
+            src={work.coverImage}
+            alt={work.title}
+            sizes="(min-width: 896px) 860px, 100vw"
+            priority
+            className="mb-8"
+            windowClassName="aspect-video bg-white"
+            imageClassName="object-contain"
+            fallback={<div className="absolute inset-0 bg-gradient-to-br from-lab-500 to-lab-800" />}
+          />
         )}
 
         <div className="flex flex-wrap gap-2">
@@ -134,7 +135,21 @@ export default async function WorkDetailPage({ params }: Props) {
           {work.featured && <Badge variant="info">Featured</Badge>}
         </div>
 
-        <h1 className="mt-4 font-serif text-4xl font-bold leading-tight">{work.title}</h1>
+        <h1 className="mt-4 font-serif text-4xl font-bold leading-tight">
+          {paperHref ? (
+            <a
+              href={paperHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group transition-colors hover:text-lab-600"
+            >
+              {work.title}
+              <ExternalLink className="ml-2 inline-block h-6 w-6 align-baseline text-muted-foreground transition-colors group-hover:text-lab-600" />
+            </a>
+          ) : (
+            work.title
+          )}
+        </h1>
 
         <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
           {work.completionDate && (
@@ -145,6 +160,15 @@ export default async function WorkDetailPage({ params }: Props) {
           )}
           <LikeButton workId={work._id} initialCount={work.likeCount} />
         </div>
+
+        {work.pdfFile && (
+          <Button asChild className="mt-6">
+            <a href={work.pdfFile} download={`${work.title}.pdf`}>
+              <Download className="h-4 w-4" />
+              Download PDF
+            </a>
+          </Button>
+        )}
 
         <Separator className="my-8" />
 
