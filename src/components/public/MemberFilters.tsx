@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 interface MemberFiltersProps {
   role?: string;
@@ -47,7 +48,7 @@ export function MemberFilters({ role, status, search }: MemberFiltersProps) {
   return (
     <div className="space-y-6">
       <div>
-        <Label className="mb-2 block text-sm font-semibold">Search</Label>
+        <Label className="type-overline mb-3 block text-cg-fg3">Search</Label>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -59,22 +60,27 @@ export function MemberFilters({ role, status, search }: MemberFiltersProps) {
             name="search"
             defaultValue={search}
             placeholder="Search by name..."
-            className="w-full"
+            className="h-10 w-full rounded-full border-transparent bg-cg-raised px-4 text-cg-fg placeholder:text-cg-fg3 focus-visible:ring-cg-hero"
           />
         </form>
       </div>
 
-      <Separator />
+      <Separator className="bg-cg-hover" />
 
       <div>
-        <Label className="mb-2 block text-sm font-semibold">Role</Label>
+        <Label className="type-overline mb-3 block text-cg-fg3">Role</Label>
         <div className="flex flex-col gap-1">
           {ROLES.map((r) => (
             <Button
               key={r.value}
-              variant={role === r.value || (!role && !r.value) ? 'secondary' : 'ghost'}
+              variant="ghost"
               size="sm"
-              className="justify-start"
+              className={cn(
+                'justify-start rounded-full px-4',
+                role === r.value || (!role && !r.value)
+                  ? 'bg-cg-fg text-cg-canvas hover:bg-cg-fg hover:text-cg-canvas'
+                  : 'text-cg-fg2 hover:bg-cg-raised hover:text-cg-fg',
+              )}
               onClick={() => updateParam('role', r.value)}
             >
               {r.label}
@@ -83,17 +89,22 @@ export function MemberFilters({ role, status, search }: MemberFiltersProps) {
         </div>
       </div>
 
-      <Separator />
+      <Separator className="bg-cg-hover" />
 
       <div>
-        <Label className="mb-2 block text-sm font-semibold">Status</Label>
+        <Label className="type-overline mb-3 block text-cg-fg3">Status</Label>
         <div className="flex flex-col gap-1">
           {STATUSES.map((s) => (
             <Button
               key={s.value}
-              variant={status === s.value || (!status && !s.value) ? 'secondary' : 'ghost'}
+              variant="ghost"
               size="sm"
-              className="justify-start"
+              className={cn(
+                'justify-start rounded-full px-4',
+                status === s.value || (!status && !s.value)
+                  ? 'bg-cg-fg text-cg-canvas hover:bg-cg-fg hover:text-cg-canvas'
+                  : 'text-cg-fg2 hover:bg-cg-raised hover:text-cg-fg',
+              )}
               onClick={() => updateParam('status', s.value)}
             >
               {s.label}

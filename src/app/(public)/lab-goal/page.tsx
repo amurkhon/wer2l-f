@@ -1,12 +1,17 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import { Target, Compass, Droplets, Recycle, FlaskConical, Leaf } from 'lucide-react';
 import { siteConfig } from '@/lib/config';
+import { PageHero } from '@/components/public/PageHero';
+import { NeonDivider } from '@/components/shared/NeonDivider';
+import { Reveal } from '@/components/shared/Reveal';
 
 export const metadata: Metadata = {
   title: 'Lab Goal & Directions',
   description: `The mission, goals, and research directions of the ${siteConfig.name}.`,
 };
+
+// Icon tint cycles through the brand accents.
+const ICON_TINTS = ['text-cg-hero', 'text-cg-accent', 'text-cg-purple'];
 
 const directions = [
   {
@@ -50,32 +55,25 @@ const directions = [
 export default function LabGoalPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden px-4 py-20 text-white">
-        <Image
-          src="/images/Image 3.png"
-          alt="Laboratory"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-lab-900/75" />
-        <div className="container relative mx-auto max-w-3xl text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-lab-300">
-            WER<sup className="text-xs">2</sup>L
-          </p>
-          <h1 className="font-serif text-4xl font-bold sm:text-5xl">Lab Goal & Directions</h1>
-          <p className="mt-4 text-lg text-lab-200">
-            Advancing sustainable solutions at the intersection of water, environment, and resource recovery.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        image="/images/Image 3.png"
+        imageAlt="Laboratory"
+        eyebrow={
+          <>
+            WER<sup className="text-[0.7em]">2</sup>L
+          </>
+        }
+        title="Lab Goal & Directions"
+        subtitle="Advancing sustainable solutions at the intersection of water, environment, and resource recovery."
+      />
 
       {/* Mission */}
-      <section className="px-4 py-16">
-        <div className="container mx-auto max-w-3xl">
-          <h2 className="font-serif text-3xl font-bold">Our Mission</h2>
-          <div className="mt-6 space-y-4 text-muted-foreground leading-relaxed">
+      <section className="px-6 py-20 md:px-10">
+        <div className="mx-auto max-w-[760px]">
+          <Reveal>
+            <h2 className="type-section text-cg-fg">Our Mission</h2>
+          </Reveal>
+          <Reveal delay="100ms" className="type-body mt-6 space-y-5 text-cg-fg2">
             <p>
               The {siteConfig.name} (WER<sup>2</sup>L) is committed to conducting transformative
               research that addresses the global challenges of water scarcity, environmental
@@ -91,46 +89,48 @@ export default function LabGoalPage() {
               Through close collaboration with industry, municipal utilities, and government agencies,
               we ensure our findings translate into tangible impact on communities and ecosystems.
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Divider */}
-      <div className="border-t" />
+      <NeonDivider />
 
       {/* Research Directions */}
-      <section className="bg-muted/20 px-4 py-16">
-        <div className="container mx-auto">
-          <div className="mb-10 max-w-2xl">
-            <h2 className="font-serif text-3xl font-bold">Research Directions</h2>
-            <p className="mt-2 text-muted-foreground">
-              Six interconnected focus areas that define our scientific and engineering agenda.
-            </p>
+      <section className="px-6 py-20 md:px-10">
+        <div className="mx-auto max-w-[1080px]">
+          <div className="mb-12 max-w-2xl">
+            <Reveal>
+              <h2 className="type-section text-cg-fg">Research Directions</h2>
+            </Reveal>
+            <Reveal delay="100ms">
+              <p className="type-body mt-3 text-cg-fg2">
+                Six interconnected focus areas that define our scientific and engineering agenda.
+              </p>
+            </Reveal>
           </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {directions.map((dir) => (
-              <div
-                key={dir.title}
-                className="rounded-xl border bg-background p-6 transition-shadow hover:shadow-md"
-              >
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10">
-                  <dir.icon className="h-5 w-5 text-primary" />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {directions.map((dir, i) => (
+              <Reveal key={dir.title} delay={`${(i % 3) * 120}ms`} className="h-full">
+                <div className="card-cg card-cg-lift card-cg-hover h-full p-7">
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-cg-raised">
+                    <dir.icon className={`h-5 w-5 ${ICON_TINTS[i % ICON_TINTS.length]}`} />
+                  </div>
+                  <h3 className="type-subheadline text-cg-fg">{dir.title}</h3>
+                  <p className="type-body-sm mt-2 text-cg-fg2">{dir.description}</p>
                 </div>
-                <h3 className="font-serif font-semibold">{dir.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-                  {dir.description}
-                </p>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
       {/* Core Values */}
-      <section className="px-4 py-16">
-        <div className="container mx-auto max-w-3xl">
-          <h2 className="font-serif text-3xl font-bold">Core Values</h2>
-          <dl className="mt-8 space-y-6">
+      <section className="px-6 pb-28 pt-12 md:px-10">
+        <div className="mx-auto max-w-[760px]">
+          <Reveal>
+            <h2 className="type-section text-cg-fg">Core Values</h2>
+          </Reveal>
+          <dl className="mt-10 space-y-8">
             {[
               {
                 term: 'Scientific Rigor',
@@ -152,13 +152,16 @@ export default function LabGoalPage() {
                 definition:
                   'We cultivate a diverse, equitable, and supportive research environment where every member can thrive and contribute.',
               },
-            ].map((item) => (
-              <div key={item.term} className="border-l-4 border-primary pl-5">
-                <dt className="font-serif font-semibold">{item.term}</dt>
-                <dd className="mt-1 text-sm text-muted-foreground leading-relaxed">
-                  {item.definition}
-                </dd>
-              </div>
+            ].map((item, i) => (
+              <Reveal
+                key={item.term}
+                delay={`${i * 100}ms`}
+                direction="right"
+                className="border-l-2 border-cg-hero pl-6"
+              >
+                <dt className="type-subheadline text-cg-fg">{item.term}</dt>
+                <dd className="type-body-sm mt-1.5 text-cg-fg2">{item.definition}</dd>
+              </Reveal>
             ))}
           </dl>
         </div>

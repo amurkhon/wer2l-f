@@ -41,16 +41,16 @@ async function MemberGrid({
 
   if (sorted.length === 0) {
     return (
-      <div className="py-20 text-center text-muted-foreground">
+      <div className="type-body py-20 text-center text-cg-fg2">
         No members found matching your filters.
       </div>
     );
   }
 
   return (
-    <div className="grid gap-[22px] sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
       {sorted.map((member, i) => (
-        <Reveal key={member._id} delay={`${(i % 4) * 70}ms`} className="h-full">
+        <Reveal key={member._id} delay={`${(i % 3) * 120}ms`} className="h-full">
           <MemberCard member={member} />
         </Reveal>
       ))}
@@ -60,15 +60,9 @@ async function MemberGrid({
 
 function MemberGridSkeleton() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="rounded-[20px] border p-3.5">
-          <Skeleton className="aspect-[4/5] w-full rounded-[14px]" />
-          <div className="space-y-2 px-2 pb-3 pt-5">
-            <Skeleton className="h-5 w-3/4" />
-            <Skeleton className="h-4 w-1/2" />
-          </div>
-        </div>
+    <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <Skeleton key={i} className="aspect-[4/5] w-full rounded-[20px]" />
       ))}
     </div>
   );
@@ -81,21 +75,17 @@ export default async function MembersPage({ searchParams }: MembersPageProps) {
   const search = params.search;
 
   return (
-    <div className="mx-auto max-w-[1200px] px-6 pb-24 pt-16 sm:px-10">
-      <Reveal className="mb-10">
-        <div className="mb-3 text-[13px] font-bold uppercase tracking-[0.16em] text-lab-600">
-          People
-        </div>
-        <h1 className="font-serif text-[clamp(40px,5.5vw,64px)] font-bold tracking-[-0.025em] text-[#13142e]">
-          Our Researchers
-        </h1>
-        <p className="mt-3.5 max-w-[560px] text-[18px] leading-[1.6] text-[#62677e]">
+    <div className="mx-auto max-w-[1080px] px-6 pb-28 pt-20 md:px-10">
+      <Reveal className="mb-12">
+        <div className="type-overline mb-4 text-cg-hero">People</div>
+        <h1 className="type-title text-cg-fg">Our Researchers</h1>
+        <p className="type-body mt-5 max-w-[580px] text-cg-fg2">
           Faculty, researchers and students advancing water and environmental engineering.
         </p>
       </Reveal>
 
       <div className="flex flex-col gap-8 md:flex-row">
-        <aside className="md:w-56 shrink-0">
+        <aside className="shrink-0 md:w-52">
           <MemberFilters role={role} status={status} search={search} />
         </aside>
         <div className="flex-1">

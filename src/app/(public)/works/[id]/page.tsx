@@ -96,8 +96,13 @@ export default async function WorkDetailPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="container mx-auto max-w-4xl px-4 py-12">
-        <Button asChild variant="ghost" size="sm" className="mb-6 -ml-2">
+      <div className="mx-auto max-w-[860px] px-6 pb-28 pt-12 md:px-10">
+        <Button
+          asChild
+          variant="ghost"
+          size="sm"
+          className="-ml-3 mb-8 rounded-full text-cg-fg2 hover:bg-cg-raised hover:text-cg-fg"
+        >
           <Link href="/works">
             <ArrowLeft className="h-4 w-4" />
             Back to Works
@@ -111,10 +116,10 @@ export default async function WorkDetailPage({ params }: Props) {
             alt={work.title}
             sizes="(min-width: 896px) 860px, 100vw"
             priority
-            className="mb-8"
+            className="press-tile anim-blur-in mb-10"
             windowClassName="aspect-video bg-white"
             imageClassName="object-contain"
-            fallback={<div className="absolute inset-0 bg-gradient-to-br from-lab-500 to-lab-800" />}
+            fallback={<div className="absolute inset-0 bg-cg-raised" />}
           />
         )}
 
@@ -135,23 +140,23 @@ export default async function WorkDetailPage({ params }: Props) {
           {work.featured && <Badge variant="info">Featured</Badge>}
         </div>
 
-        <h1 className="mt-4 font-serif text-4xl font-bold leading-tight">
+        <h1 className="mt-6 font-display text-[clamp(2.25rem,4.6vw,3.25rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-cg-fg">
           {paperHref ? (
             <a
               href={paperHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="group transition-colors hover:text-lab-600"
+              className="group transition-colors hover:text-cg-hero"
             >
               {work.title}
-              <ExternalLink className="ml-2 inline-block h-6 w-6 align-baseline text-muted-foreground transition-colors group-hover:text-lab-600" />
+              <ExternalLink className="ml-2 inline-block h-6 w-6 align-baseline text-cg-fg3 transition-colors group-hover:text-cg-hero" />
             </a>
           ) : (
             work.title
           )}
         </h1>
 
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+        <div className="mt-5 flex flex-wrap items-center gap-4 text-sm text-cg-fg2">
           {work.completionDate && (
             <span className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4" />
@@ -162,26 +167,24 @@ export default async function WorkDetailPage({ params }: Props) {
         </div>
 
         {work.pdfFile && (
-          <Button asChild className="mt-6">
-            <a href={work.pdfFile} download={`${work.title}.pdf`}>
-              <Download className="h-4 w-4" />
-              Download PDF
-            </a>
-          </Button>
+          <a href={work.pdfFile} download={`${work.title}.pdf`} className="btn-cg btn-cg--primary mt-7">
+            <Download className="h-4 w-4" />
+            Download PDF
+          </a>
         )}
 
-        <Separator className="my-8" />
+        <Separator className="my-10 bg-cg-hover" />
 
         {/* Authors */}
         {sortedAuthors.length > 0 && (
           <section className="mb-8">
-            <h2 className="mb-4 font-serif text-xl font-semibold">Authors</h2>
+            <h2 className="type-headline mb-4 text-cg-fg">Authors</h2>
             <div className="space-y-3">
               {sortedAuthors.map((authorship) => (
                 <Link
                   key={authorship._id}
                   href={`/members/${authorship.memberId}`}
-                  className="flex items-center gap-3 rounded-lg p-2 hover:bg-accent"
+                  className="flex items-center gap-3 rounded-2xl p-3 transition-colors hover:bg-cg-raised"
                 >
                   <Avatar className="h-10 w-10">
                     <AvatarImage
@@ -197,8 +200,8 @@ export default async function WorkDetailPage({ params }: Props) {
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <div className="font-medium">{authorship.member.fullName}</div>
-                    <div className="text-xs text-muted-foreground">
+                    <div className="font-semibold text-cg-fg">{authorship.member.fullName}</div>
+                    <div className="text-xs text-cg-fg2">
                       {AUTHORSHIP_ROLE_LABELS[authorship.role]}
                       {authorship.contribution && ` · ${authorship.contribution}`}
                     </div>
@@ -212,8 +215,8 @@ export default async function WorkDetailPage({ params }: Props) {
         {/* Description */}
         {work.description && (
           <section className="mb-8">
-            <h2 className="mb-3 font-serif text-xl font-semibold">Abstract</h2>
-            <p className="whitespace-pre-wrap leading-relaxed text-muted-foreground">
+            <h2 className="type-headline mb-3 text-cg-fg">Abstract</h2>
+            <p className="type-body whitespace-pre-wrap text-cg-fg2">
               {work.description}
             </p>
           </section>
@@ -222,7 +225,7 @@ export default async function WorkDetailPage({ params }: Props) {
         {/* Attachments */}
         {attachments.length > 0 && (
           <section className="mb-8">
-            <h2 className="mb-4 font-serif text-xl font-semibold">Downloads</h2>
+            <h2 className="type-headline mb-4 text-cg-fg">Downloads</h2>
             <div className="space-y-2">
               {attachments.map((attachment) => (
                 <a
@@ -230,13 +233,13 @@ export default async function WorkDetailPage({ params }: Props) {
                   href={attachment.fileUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-lg border p-3 hover:bg-accent"
+                  className="flex items-center gap-3 rounded-2xl bg-cg-base p-4 transition-colors hover:bg-cg-raised"
                 >
-                  <Download className="h-4 w-4 shrink-0 text-muted-foreground" />
-                  <span className="flex-1 text-sm font-medium">
+                  <Download className="h-4 w-4 shrink-0 text-cg-hero" />
+                  <span className="flex-1 text-sm font-medium text-cg-fg">
                     {attachment.caption ?? attachment.fileUrl.split('/').pop()}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-cg-fg3">
                     {attachment.sizeBytes != null ? formatFileSize(attachment.sizeBytes) : ''}
                   </span>
                 </a>
@@ -248,10 +251,10 @@ export default async function WorkDetailPage({ params }: Props) {
         {/* Related Works */}
         {relatedWorks.length > 0 && (
           <>
-            <Separator className="my-10" />
+            <Separator className="my-12 bg-cg-hover" />
             <section>
-              <h2 className="mb-6 font-serif text-2xl font-semibold">Related Works</h2>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <h2 className="type-section mb-8 text-cg-fg">Related Works</h2>
+              <div className="grid gap-5 sm:grid-cols-2">
                 {relatedWorks.map((rw) => (
                   <WorkCard key={rw._id} work={rw} />
                 ))}

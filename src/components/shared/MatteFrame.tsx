@@ -35,13 +35,8 @@ export function MatteFrame({
   priority,
 }: MatteFrameProps) {
   return (
-    <div
-      className={cn(
-        'rounded-[14px] border border-[#e4e5f1] bg-[#f5f6fb] p-2.5 shadow-[0_1px_2px_rgba(25,26,54,.05)]',
-        className,
-      )}
-    >
-      <div className={cn('relative overflow-hidden rounded-[8px] bg-[#e9eaf4]', windowClassName)}>
+    <div className={cn('rounded-[16px] border border-cg-hover bg-cg-raised p-2', className)}>
+      <div className={cn('relative overflow-hidden rounded-[10px] bg-cg-hover', windowClassName)}>
         <SafeImage
           src={src}
           alt={alt}
@@ -53,7 +48,7 @@ export function MatteFrame({
         />
         <span
           aria-hidden
-          className="pointer-events-none absolute inset-0 rounded-[8px] shadow-[inset_0_0_0_1px_rgba(25,26,54,.08),inset_0_1px_3px_rgba(25,26,54,.10)]"
+          className="pointer-events-none absolute inset-0 rounded-[10px] shadow-[inset_0_0_0_1px_rgba(0,0,0,.08),inset_0_1px_3px_rgba(0,0,0,.12)]"
         />
       </div>
     </div>

@@ -50,22 +50,18 @@ export default async function WorksPage({ searchParams }: WorksPageProps) {
   const totalPages = Math.ceil(allWorks.length / PAGE_SIZE);
 
   return (
-    <div className="mx-auto max-w-[1200px] px-6 pb-24 pt-16 sm:px-10">
-      <Reveal className="mb-9">
-        <div className="mb-3 text-[13px] font-bold uppercase tracking-[0.16em] text-lab-600">
-          Research Output
-        </div>
-        <h1 className="font-serif text-[clamp(40px,5.5vw,64px)] font-bold tracking-[-0.025em] text-[#13142e]">
-          Works &amp; Publications
-        </h1>
-        <p className="mt-3.5 max-w-[560px] text-[18px] leading-[1.6] text-[#62677e]">
+    <div className="mx-auto max-w-[1080px] px-6 pb-28 pt-20 md:px-10">
+      <Reveal className="mb-12">
+        <div className="type-overline mb-4 text-cg-hero">Research Output</div>
+        <h1 className="type-title text-cg-fg">Works &amp; Publications</h1>
+        <p className="type-body mt-5 max-w-[580px] text-cg-fg2">
           {allWorks.length} project{allWorks.length !== 1 ? 's' : ''} and peer-reviewed papers
           spanning hydraulics, climate adaptation and resilient infrastructure.
         </p>
       </Reveal>
 
       <div className="flex flex-col gap-8 md:flex-row">
-        <aside className="md:w-56 shrink-0">
+        <aside className="shrink-0 md:w-52">
           <Suspense>
             <WorkFilters
               categories={categories}
@@ -79,14 +75,14 @@ export default async function WorksPage({ searchParams }: WorksPageProps) {
 
         <div className="flex-1">
           {paginatedWorks.length === 0 ? (
-            <div className="py-20 text-center text-muted-foreground">
+            <div className="type-body py-20 text-center text-cg-fg2">
               No works found matching your filters.
             </div>
           ) : (
             <>
-              <div className="grid gap-[26px] sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {paginatedWorks.map((work, i) => (
-                  <Reveal key={work._id} delay={`${(i % 9) * 60}ms`} className="h-full">
+                  <Reveal key={work._id} delay={`${(i % 3) * 120}ms`} className="h-full">
                     <WorkCard
                       work={work}
                       categoryName={work.categoryId ? categoryMap[work.categoryId]?.name : undefined}
@@ -105,10 +101,11 @@ export default async function WorksPage({ searchParams }: WorksPageProps) {
                       <a
                         key={p}
                         href={`/works?${pageParams.toString()}`}
-                        className={`flex h-9 w-9 items-center justify-center rounded-md border text-sm font-medium transition-colors ${
+                        aria-current={p === page ? 'page' : undefined}
+                        className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
                           p === page
-                            ? 'bg-primary text-primary-foreground'
-                            : 'hover:bg-accent'
+                            ? 'bg-cg-primary text-white'
+                            : 'bg-cg-raised text-cg-fg2 hover:bg-cg-hover hover:text-cg-fg'
                         }`}
                       >
                         {p}

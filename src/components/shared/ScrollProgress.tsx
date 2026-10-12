@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 
 /**
- * Fixed gradient bar pinned to the top of the viewport that fills as the
- * page scrolls — mirrors the WER²L animated design's reading-progress bar.
+ * Fixed purple → light-blue → blue bar pinned to the top of the viewport that
+ * fills as the page scrolls.
  */
 export function ScrollProgress() {
   const barRef = useRef<HTMLDivElement | null>(null);
@@ -40,8 +40,8 @@ export function ScrollProgress() {
     <div
       ref={barRef}
       aria-hidden
-      className="fixed left-0 top-0 z-[120] h-[3px] w-0 bg-gradient-to-r from-lab-600 to-lab-400"
-      style={{ boxShadow: '0 0 12px rgba(99,113,241,.6)' }}
+      className="fixed left-0 top-0 z-[120] h-[3px] w-0 bg-gradient-to-r from-cg-purple via-cg-accent to-cg-hero"
+      style={{ boxShadow: '0 0 12px rgb(var(--cg-hero) / .55)' }}
     />
   );
 }

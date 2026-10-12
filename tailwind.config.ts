@@ -60,6 +60,25 @@ const config: Config = {
           border: 'hsl(var(--sidebar-border))',
           ring: 'hsl(var(--sidebar-ring))',
         },
+        // Public-site palette (Cognichip-style). Channels live in globals.css so
+        // surfaces/ink flip with the theme and opacity modifiers keep working.
+        cg: {
+          canvas: 'rgb(var(--cg-canvas) / <alpha-value>)',
+          base: 'rgb(var(--cg-base) / <alpha-value>)',
+          raised: 'rgb(var(--cg-raised) / <alpha-value>)',
+          hover: 'rgb(var(--cg-hover) / <alpha-value>)',
+          highlight: 'rgb(var(--cg-highlight) / <alpha-value>)',
+          fg: 'rgb(var(--cg-fg) / <alpha-value>)',
+          fg2: 'rgb(var(--cg-fg2) / <alpha-value>)',
+          fg3: 'rgb(var(--cg-fg3) / <alpha-value>)',
+          hero: 'rgb(var(--cg-hero) / <alpha-value>)',
+          primary: 'rgb(var(--cg-primary) / <alpha-value>)',
+          accent: 'rgb(var(--cg-accent) / <alpha-value>)',
+          purple: 'rgb(var(--cg-purple) / <alpha-value>)',
+          yellow: 'rgb(var(--cg-yellow) / <alpha-value>)',
+          magenta: 'rgb(var(--cg-magenta) / <alpha-value>)',
+          green: 'rgb(var(--cg-green) / <alpha-value>)',
+        },
         lab: {
           '50': '#f0f4ff',
           '100': '#e0eaff',
@@ -82,6 +101,8 @@ const config: Config = {
       fontFamily: {
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
         serif: ['var(--font-source-serif)', 'Georgia', 'serif'],
+        grotesk: ['var(--font-hanken)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-darker)', 'var(--font-hanken)', 'system-ui', 'sans-serif'],
       },
       keyframes: {
         'accordion-down': {

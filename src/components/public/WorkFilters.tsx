@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 interface WorkFiltersProps {
   categories: Category[];
@@ -44,7 +45,7 @@ export function WorkFilters({ categories, type, category, status, search }: Work
   return (
     <div className="space-y-6">
       <div>
-        <Label className="mb-2 block text-sm font-semibold">Search</Label>
+        <Label className="type-overline mb-3 block text-cg-fg3">Search</Label>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -56,22 +57,27 @@ export function WorkFilters({ categories, type, category, status, search }: Work
             name="search"
             defaultValue={search}
             placeholder="Search works..."
-            className="w-full"
+            className="h-10 w-full rounded-full border-transparent bg-cg-raised px-4 text-cg-fg placeholder:text-cg-fg3 focus-visible:ring-cg-hero"
           />
         </form>
       </div>
 
-      <Separator />
+      <Separator className="bg-cg-hover" />
 
       <div>
-        <Label className="mb-2 block text-sm font-semibold">Type</Label>
+        <Label className="type-overline mb-3 block text-cg-fg3">Type</Label>
         <div className="flex flex-col gap-1">
           {TYPES.map((t) => (
             <Button
               key={t.value}
-              variant={type === t.value || (!type && !t.value) ? 'secondary' : 'ghost'}
+              variant="ghost"
               size="sm"
-              className="justify-start"
+              className={cn(
+                'justify-start rounded-full px-4',
+                type === t.value || (!type && !t.value)
+                  ? 'bg-cg-fg text-cg-canvas hover:bg-cg-fg hover:text-cg-canvas'
+                  : 'text-cg-fg2 hover:bg-cg-raised hover:text-cg-fg',
+              )}
               onClick={() => updateParam('type', t.value)}
             >
               {t.label}
@@ -82,14 +88,19 @@ export function WorkFilters({ categories, type, category, status, search }: Work
 
       {categories.length > 0 && (
         <>
-          <Separator />
+          <Separator className="bg-cg-hover" />
           <div>
-            <Label className="mb-2 block text-sm font-semibold">Category</Label>
+            <Label className="type-overline mb-3 block text-cg-fg3">Category</Label>
             <div className="flex flex-col gap-1">
               <Button
-                variant={!category ? 'secondary' : 'ghost'}
+                variant="ghost"
                 size="sm"
-                className="justify-start"
+                className={cn(
+                  'justify-start rounded-full px-4',
+                  !category
+                    ? 'bg-cg-fg text-cg-canvas hover:bg-cg-fg hover:text-cg-canvas'
+                    : 'text-cg-fg2 hover:bg-cg-raised hover:text-cg-fg',
+                )}
                 onClick={() => updateParam('category', '')}
               >
                 All Categories
@@ -97,9 +108,14 @@ export function WorkFilters({ categories, type, category, status, search }: Work
               {categories.map((cat) => (
                 <Button
                   key={cat._id}
-                  variant={category === cat._id ? 'secondary' : 'ghost'}
+                  variant="ghost"
                   size="sm"
-                  className="justify-start"
+                  className={cn(
+                    'justify-start rounded-full px-4',
+                    category === cat._id
+                      ? 'bg-cg-fg text-cg-canvas hover:bg-cg-fg hover:text-cg-canvas'
+                      : 'text-cg-fg2 hover:bg-cg-raised hover:text-cg-fg',
+                  )}
                   onClick={() => updateParam('category', cat._id)}
                 >
                   {cat.name}

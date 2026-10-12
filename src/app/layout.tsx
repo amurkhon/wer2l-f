@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Source_Serif_4 } from 'next/font/google';
+import { Darker_Grotesque, Hanken_Grotesk, Inter, Source_Serif_4 } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import './globals.css';
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/utils';
@@ -13,6 +13,19 @@ const inter = Inter({
 const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
   variable: '--font-source-serif',
+  display: 'swap',
+});
+
+// Public-site type pair: Hanken Grotesk for UI/body, Darker Grotesque for display titles.
+const hanken = Hanken_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-hanken',
+  display: 'swap',
+});
+
+const darkerGrotesque = Darker_Grotesque({
+  subsets: ['latin'],
+  variable: '--font-darker',
   display: 'swap',
 });
 
@@ -39,7 +52,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${sourceSerif.variable} font-sans antialiased`}>
+      <body
+        className={`${inter.variable} ${sourceSerif.variable} ${hanken.variable} ${darkerGrotesque.variable} font-sans antialiased`}
+      >
         <Providers>{children}</Providers>
       </body>
     </html>

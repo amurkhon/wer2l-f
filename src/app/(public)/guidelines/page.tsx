@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import Image from 'next/image';
 import {
   Clock,
   CalendarDays,
@@ -8,6 +7,9 @@ import {
   Users,
   Quote,
 } from 'lucide-react';
+import { PageHero } from '@/components/public/PageHero';
+import { NeonDivider } from '@/components/shared/NeonDivider';
+import { Reveal } from '@/components/shared/Reveal';
 
 export const metadata: Metadata = {
   title: 'Student Guidelines',
@@ -21,15 +23,15 @@ const sections = [
     icon: Clock,
     title: 'Working Hours',
     content: (
-      <div className="space-y-4 text-muted-foreground leading-relaxed">
+      <div className="type-body-sm space-y-4 text-cg-fg2">
         <p>
           Graduate students are expected to maintain regular working hours and actively participate
           in research activities.
         </p>
-        <div className="rounded-lg border bg-muted/40 px-5 py-4">
+        <div className="rounded-2xl bg-cg-base px-5 py-4">
           <ul className="space-y-1.5 text-sm">
             <li>
-              <span className="font-medium text-foreground">Standard working hours:</span>{' '}
+              <span className="font-medium text-cg-fg">Standard working hours:</span>{' '}
               09:00 – 18:00 (Monday – Friday)
             </li>
             <li>
@@ -55,12 +57,12 @@ const sections = [
     icon: CalendarDays,
     title: 'Meeting Policy',
     content: (
-      <div className="space-y-4 text-muted-foreground leading-relaxed">
+      <div className="type-body-sm space-y-4 text-cg-fg2">
         <p>
           Regular meetings are essential for monitoring research progress and maintaining research
           quality.
         </p>
-        <div className="rounded-lg border bg-muted/40 px-5 py-4">
+        <div className="rounded-2xl bg-cg-base px-5 py-4">
           <ul className="space-y-1.5 text-sm">
             <li>Lab meetings and individual meetings follow a fixed schedule.</li>
             <li>Frequent changes to meeting times should be avoided.</li>
@@ -79,13 +81,13 @@ const sections = [
     icon: TrendingUp,
     title: 'Research Productivity',
     content: (
-      <div className="space-y-4 text-muted-foreground leading-relaxed">
+      <div className="type-body-sm space-y-4 text-cg-fg2">
         <p>The WER²L emphasizes continuous research progress and meaningful outcomes.</p>
         <p>
           Students are generally expected to produce tangible research output approximately every
           two weeks, such as:
         </p>
-        <div className="rounded-lg border bg-muted/40 px-5 py-4">
+        <div className="rounded-2xl bg-cg-base px-5 py-4">
           <ul className="space-y-1.5 text-sm">
             {[
               'Experimental results',
@@ -95,7 +97,7 @@ const sections = [
               'Manuscript draft sections',
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cg-hero" />
                 {item}
               </li>
             ))}
@@ -116,15 +118,15 @@ const sections = [
     icon: BookOpen,
     title: 'Publication Goals',
     content: (
-      <div className="space-y-6 text-muted-foreground leading-relaxed">
+      <div className="type-body-sm space-y-6 text-cg-fg2">
         <p>
           Our laboratory aims to publish research in high-quality international journals. Expected
           research goals are as follows:
         </p>
         <div className="grid gap-4 sm:grid-cols-2">
           {/* Master's */}
-          <div className="rounded-xl border bg-background p-5">
-            <h4 className="mb-3 font-serif font-semibold text-foreground">
+          <div className="rounded-2xl bg-cg-base p-5">
+            <h4 className="mb-3 font-semibold text-cg-fg">
               Master&apos;s Students
             </h4>
             <ul className="space-y-2 text-sm">
@@ -133,22 +135,22 @@ const sections = [
                 'One co-authored international journal paper',
               ].map((goal) => (
                 <li key={goal} className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cg-hero" />
                   {goal}
                 </li>
               ))}
             </ul>
           </div>
           {/* PhD */}
-          <div className="rounded-xl border bg-background p-5">
-            <h4 className="mb-3 font-serif font-semibold text-foreground">PhD Students</h4>
+          <div className="rounded-2xl bg-cg-base p-5">
+            <h4 className="mb-3 font-semibold text-cg-fg">PhD Students</h4>
             <ul className="space-y-2 text-sm">
               {[
                 'One Top 5% journal paper',
                 'Two Top 10% journal papers',
               ].map((goal) => (
                 <li key={goal} className="flex items-start gap-2">
-                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cg-hero" />
                   {goal}
                 </li>
               ))}
@@ -167,19 +169,19 @@ const sections = [
     icon: Users,
     title: 'Professional Research Culture',
     content: (
-      <div className="space-y-4 text-muted-foreground leading-relaxed">
+      <div className="type-body-sm space-y-4 text-cg-fg2">
         <p>
           The laboratory is a professional and international research environment. We respect
           cultural diversity, international collaboration, and religious practices.
         </p>
         <p>
           At the same time, all students must understand that{' '}
-          <span className="font-medium text-foreground">
+          <span className="font-medium text-cg-fg">
             research responsibility and professionalism come first.
           </span>
         </p>
         <p>Students are expected to maintain:</p>
-        <div className="rounded-lg border bg-muted/40 px-5 py-4">
+        <div className="rounded-2xl bg-cg-base px-5 py-4">
           <ul className="space-y-1.5 text-sm">
             {[
               'Integrity and honesty in research',
@@ -188,7 +190,7 @@ const sections = [
               'Commitment to scientific excellence',
             ].map((item) => (
               <li key={item} className="flex items-start gap-2">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cg-hero" />
                 {item}
               </li>
             ))}
@@ -207,88 +209,93 @@ const sections = [
 export default function GuidelinesPage() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative overflow-hidden px-4 py-20 text-white">
-        <Image
-          src="/images/Image 4.png"
-          alt="WER²L laboratory"
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-lab-900/75" />
-        <div className="container relative mx-auto max-w-3xl text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-lab-300">
-            WER<sup className="text-xs">2</sup>L
-          </p>
-          <h1 className="font-serif text-4xl font-bold sm:text-5xl">Student Guidelines</h1>
-          <p className="mt-4 text-lg text-lab-200">
+      <PageHero
+        image="/images/Image 4.png"
+        imageAlt="WER²L laboratory"
+        eyebrow={
+          <>
+            WER<sup className="text-[0.7em]">2</sup>L
+          </>
+        }
+        title="Student Guidelines"
+        subtitle={
+          <>
             Standards and expectations for all graduate students in the Water Environment &amp;
             Resource Recovery Lab.
-          </p>
-        </div>
-      </section>
+          </>
+        }
+      />
 
       {/* Intro */}
-      <section className="px-4 py-14">
-        <div className="container mx-auto max-w-3xl">
-          <p className="text-muted-foreground leading-relaxed">
+      <section className="px-6 py-16 md:px-10">
+        <Reveal className="type-body mx-auto max-w-[760px] text-cg-fg2">
+          <p>
             The Water Environment &amp; Resource Recovery Lab (WER<sup>2</sup>L) conducts research
             aimed at solving real-world environmental problems through innovative engineering
             technologies. Our laboratory focuses on developing practical environmental technologies
             and publishing impactful research in high-quality international journals.
           </p>
-          <p className="mt-4 text-muted-foreground leading-relaxed">
+          <p className="mt-5">
             To maintain a productive, professional, and collaborative research environment, the
             following guidelines apply to all graduate students in the laboratory.
           </p>
-        </div>
+        </Reveal>
       </section>
 
-      <div className="border-t" />
+      <NeonDivider />
 
       {/* Sections */}
-      <section className="px-4 py-14">
-        <div className="container mx-auto max-w-3xl space-y-14">
+      <section className="px-6 py-16 md:px-10">
+        <div className="mx-auto max-w-[760px] space-y-14">
           {sections.map((s) => (
-            <div key={s.number} className="flex gap-6">
+            <Reveal key={s.number} className="flex gap-6">
               {/* Number + icon column */}
-              <div className="flex shrink-0 flex-col items-center gap-2">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
-                  <s.icon className="h-5 w-5 text-primary" />
+              <div className="flex shrink-0 flex-col items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cg-raised">
+                  <s.icon className="h-5 w-5 text-cg-hero" />
                 </div>
-                <div className="flex-1 w-px bg-border" />
+                <div className="w-px flex-1 bg-gradient-to-b from-cg-hover to-transparent" />
               </div>
 
               {/* Content */}
-              <div className="pb-6 flex-1 min-w-0">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-widest text-primary">
-                  {s.number}
-                </div>
-                <h2 className="mb-4 font-serif text-2xl font-bold">{s.title}</h2>
+              <div className="min-w-0 flex-1 pb-6">
+                <div className="type-overline mb-1 text-cg-hero">{s.number}</div>
+                <h2 className="mb-5 font-display text-[clamp(30px,3.6vw,38px)] font-semibold leading-[1.05] tracking-[-0.01em] text-cg-fg">
+                  {s.title}
+                </h2>
                 {s.content}
               </div>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>
 
-      <div className="border-t" />
-
       {/* Closing / Professor note */}
-      <section className="bg-lab-950 px-4 py-16 text-white">
-        <div className="container mx-auto max-w-2xl text-center">
-          <Quote className="mx-auto mb-6 h-8 w-8 text-lab-400" />
-          <blockquote className="font-serif text-xl font-medium leading-relaxed text-lab-100">
+      <section className="px-6 pb-28 pt-8 md:px-10">
+        <Reveal className="relative mx-auto max-w-[860px] overflow-hidden rounded-[2rem] bg-cg-base px-8 pb-16 pt-14 text-center md:px-16">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 70% 60% at 50% 0%, rgb(135 42 254 / calc(.28 * var(--cg-glow))), transparent 70%)',
+            }}
+          />
+          <Quote className="relative mx-auto mb-8 h-10 w-10 text-cg-hero" />
+          <blockquote className="relative font-display text-[clamp(28px,3.8vw,42px)] font-semibold leading-[1.12] tracking-[-0.01em] text-cg-fg">
             &ldquo;Our laboratory studies technologies that are used in practice and publishes the
             knowledge generated from those technologies.&rdquo;
           </blockquote>
-          <div className="mt-8 space-y-1 text-sm text-lab-300">
-            <p className="font-semibold text-white">Professor Sung Hyuk</p>
+          <div className="type-body-sm relative mt-10 space-y-1 text-cg-fg2">
+            <p className="font-semibold text-cg-fg">Professor Sung Hyuk</p>
             <p>Water Environment &amp; Resource Recovery Lab (WER<sup>2</sup> Lab)</p>
             <p>Department of Civil Engineering, Dong-A University</p>
           </div>
-        </div>
+          <div
+            aria-hidden
+            className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-cg-purple via-cg-accent to-cg-purple"
+          />
+        </Reveal>
       </section>
     </>
   );

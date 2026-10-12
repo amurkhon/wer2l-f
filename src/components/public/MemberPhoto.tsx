@@ -32,7 +32,7 @@ export function MemberPhoto({ src, name, sizes, className, priority }: MemberPho
       windowClassName="aspect-[4/5]"
       imageClassName="object-cover object-[50%_20%] transition-transform duration-[600ms] ease-[cubic-bezier(.16,.84,.44,1)] group-hover:scale-[1.04]"
       fallback={
-        <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-lab-500 to-lab-800 font-serif text-[40px] font-bold text-white">
+        <div className="absolute inset-0 flex items-center justify-center bg-cg-raised bg-[radial-gradient(100%_80%_at_80%_0%,rgb(135_42_254/.5),transparent_60%),radial-gradient(80%_70%_at_10%_100%,rgb(255_81_1/.35),transparent_60%)] font-display text-[56px] font-bold text-white/90">
           {initialsOf(name)}
         </div>
       }

@@ -2,120 +2,161 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { ThemeToggle } from '@/components/shared/ThemeToggle';
 import { siteConfig } from '@/lib/config';
 import { cn } from '@/lib/utils';
 
 export function Header() {
   const pathname = usePathname();
+  const barRef = useRef<HTMLDivElement | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
-  const isHome = pathname === '/';
-  // Solid (light) chrome whenever we're off the hero: not on home, or scrolled.
-  const solid = !isHome || scrolled;
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 10);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => setMobileOpen(false), [pathname]);
+
+  // Publish the bar height so sticky sections can sit right beneath it. Measure the
+  // bar, not the whole header: the open mobile menu sizes itself from this value.
+  useEffect(() => {
+    const el = barRef.current;
+    if (!el) return;
+    const root = document.documentElement;
+    const sync = () => root.style.setProperty('--site-nav-h', `${el.offsetHeight}px`);
+    sync();
+    const ro = new ResizeObserver(sync);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.removeProperty('--site-nav-h');
+    };
+  }, []);
+
+  const isActive = (href: string) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
+
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-[90] transition-[background,box-shadow,padding,border-color] duration-[400ms]',
-        solid
-          ? 'border-b border-[#ebecf5] bg-white/80 py-3 shadow-[0_6px_30px_-12px_rgba(30,31,75,.18)] backdrop-blur-md'
-          : 'border-b border-transparent bg-transparent py-5',
+        'sticky top-0 z-50 w-full px-6 transition-colors duration-300 md:px-10',
+        scrolled || mobileOpen ? 'frosted-cg' : 'bg-cg-canvas',
       )}
     >
-      <div className="mx-auto flex max-w-[1280px] items-center justify-between px-6 sm:px-10">
+      <div ref={barRef} className="mx-auto flex max-w-[1080px] items-center justify-between py-5">
         {/* Logo */}
-        <Link href="/" className="group flex items-center gap-[11px]">
-          <span className="flex h-[38px] w-[38px] items-center justify-center rounded-[11px] bg-gradient-to-br from-lab-600 to-lab-800 font-serif text-[17px] font-bold text-white shadow-[0_8px_20px_-6px_rgba(79,84,228,.7)]">
+        <Link href="/" className="flex items-center gap-[11px]" aria-label={`${siteConfig.shortName} home`}>
+          <span className="flex h-9 w-9 items-center justify-center rounded-[11px] bg-cg-fg font-display text-[19px] font-bold leading-none text-cg-canvas">
             W²
           </span>
-          <span
-            className={cn(
-              'font-serif text-xl font-bold tracking-tight transition-colors duration-[400ms]',
-              solid ? 'text-lab-950' : 'text-white',
-            )}
-          >
+          <span className="font-display text-[26px] font-bold leading-none tracking-[-0.01em] text-cg-fg">
             WER²L
           </span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-7 lg:flex">
-          {siteConfig.nav.map((item) => {
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'group relative py-1.5 text-[15px] font-medium tracking-[0.005em] transition-colors duration-300 hover:text-lab-600',
-                  active ? (solid ? 'text-lab-600' : 'text-white') : solid ? 'text-[#3b3e52]' : 'text-white/80',
-                )}
-              >
-                {item.label}
+        <div className="flex items-center gap-5 md:gap-7">
+          {/* Desktop nav */}
+          <nav className="hidden items-center gap-7 lg:flex">
+            {siteConfig.nav.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  className={cn(
+                    'group relative py-1 text-[17px] font-medium transition-colors duration-150',
+                    active ? 'text-cg-fg' : 'text-cg-fg2 hover:text-cg-fg',
+                  )}
+                >
+                  {item.label}
+                  <span
+                    className={cn(
+                      'absolute -bottom-1 left-1/2 h-[2px] -translate-x-1/2 rounded-full bg-cg-hero transition-[width] duration-300 ease-[cubic-bezier(.16,1,.3,1)] group-hover:w-full',
+                      active ? 'w-full' : 'w-0',
+                    )}
+                  />
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Actions */}
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <Link href="/about" className="btn-cg btn-cg--primary hidden sm:inline-flex">
+              Contact
+            </Link>
+            <button
+              className="-mr-2 flex min-h-11 min-w-11 items-center justify-center text-cg-fg lg:hidden"
+              onClick={() => setMobileOpen((o) => !o)}
+              aria-label="Toggle menu"
+              aria-expanded={mobileOpen}
+            >
+              <span className="relative block h-4 w-6">
                 <span
                   className={cn(
-                    'absolute -bottom-[3px] left-0 h-[2px] rounded-sm bg-lab-600 transition-[width] duration-[400ms] ease-[cubic-bezier(.16,.84,.44,1)] group-hover:w-full',
-                    active ? 'w-full' : 'w-0',
+                    'absolute left-0 top-0 block h-0.5 w-6 rounded bg-current transition-transform duration-300',
+                    mobileOpen && 'translate-y-[7px] rotate-45',
                   )}
                 />
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Actions */}
-        <div className="flex items-center gap-3">
-          <ThemeToggle />
-          <Link
-            href="/about"
-            className="hidden rounded-[10px] bg-lab-600 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_8px_22px_-8px_rgba(79,84,228,.7)] transition-transform duration-200 hover:-translate-y-0.5 sm:inline-block"
-          >
-            Contact
-          </Link>
-          <button
-            className={cn(
-              'inline-flex h-9 w-9 items-center justify-center rounded-md transition-colors lg:hidden',
-              solid ? 'text-[#3b3e52] hover:bg-black/5' : 'text-white hover:bg-white/10',
-            )}
-            onClick={() => setMobileOpen((o) => !o)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+                <span
+                  className={cn(
+                    'absolute left-0 top-[7px] block h-0.5 w-6 rounded bg-current transition-opacity duration-200',
+                    mobileOpen && 'opacity-0',
+                  )}
+                />
+                <span
+                  className={cn(
+                    'absolute left-0 top-[14px] block h-0.5 w-6 rounded bg-current transition-transform duration-300',
+                    mobileOpen && '-translate-y-[7px] -rotate-45',
+                  )}
+                />
+              </span>
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Mobile nav */}
-      {mobileOpen && (
-        <nav className="border-t border-[#ebecf5] bg-white/95 backdrop-blur-md lg:hidden">
-          <div className="mx-auto flex max-w-[1280px] flex-col gap-1 px-6 py-3">
-            {siteConfig.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className={cn(
-                  'rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-lab-50',
-                  pathname === item.href ? 'bg-lab-50 text-lab-600' : 'text-[#3b3e52]',
-                )}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </nav>
-      )}
+      <nav
+        className={cn(
+          'overflow-y-auto border-t transition-all duration-300 ease-in-out lg:hidden',
+          mobileOpen
+            ? 'max-h-[calc(100dvh-var(--site-nav-h,76px))] border-cg-hover opacity-100'
+            : 'pointer-events-none max-h-0 border-transparent opacity-0',
+        )}
+        aria-hidden={!mobileOpen}
+      >
+        <div className="mx-auto flex max-w-[1080px] flex-col gap-2 pb-6 pt-4">
+          {siteConfig.nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              tabIndex={mobileOpen ? undefined : -1}
+              className={cn(
+                'flex items-center justify-between rounded-2xl px-4 py-3.5 text-[18px] font-medium transition-colors active:bg-cg-hover',
+                isActive(item.href) ? 'bg-cg-raised text-cg-fg' : 'bg-cg-base text-cg-fg2',
+              )}
+            >
+              {item.label}
+              <ChevronRight className="h-4 w-4 opacity-40" />
+            </Link>
+          ))}
+          <Link
+            href="/about"
+            tabIndex={mobileOpen ? undefined : -1}
+            className="btn-cg btn-cg--lg btn-cg--primary mt-2 w-full sm:hidden"
+          >
+            Contact
+          </Link>
+        </div>
+      </nav>
     </header>
   );
 }

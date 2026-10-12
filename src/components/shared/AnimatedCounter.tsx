@@ -58,7 +58,7 @@ export function AnimatedCounter({ value, suffix = '', duration = 1500 }: Animate
   return (
     <span ref={ref} className="inline-flex items-baseline justify-center">
       <span>{display}</span>
-      {suffix && <span className="text-lab-600">{suffix}</span>}
+      {suffix && <span className="text-cg-hero">{suffix}</span>}
     </span>
   );
 }

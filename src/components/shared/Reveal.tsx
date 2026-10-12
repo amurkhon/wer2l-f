@@ -4,17 +4,27 @@ import { useEffect, useRef } from 'react';
 import { cn } from '@/lib/utils';
 
 interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Stagger delay, e.g. "90ms" */
+  /** Stagger delay, e.g. "100ms" */
   delay?: string;
+  /** Which way the element travels in from; "none" fades in place. */
+  direction?: 'up' | 'down' | 'left' | 'right' | 'none';
   as?: 'div' | 'article' | 'section' | 'li';
 }
 
 /**
  * Scroll-reveal wrapper. Renders hidden (via the `[data-reveal]` rule in
- * globals.css) and adds `.in` once it enters the viewport. Honors
- * prefers-reduced-motion through the same CSS rule.
+ * globals.css) and adds `.in` once it enters the viewport: a 700ms ease-out
+ * fade with a 2rem slide. Honors prefers-reduced-motion through the same CSS rule.
  */
-export function Reveal({ children, className, delay, as = 'div', style, ...rest }: RevealProps) {
+export function Reveal({
+  children,
+  className,
+  delay,
+  direction = 'up',
+  as = 'div',
+  style,
+  ...rest
+}: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -39,7 +49,7 @@ export function Reveal({ children, className, delay, as = 'div', style, ...rest 
           }
         });
       },
-      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+      { threshold: 0.15, rootMargin: '0px 0px -60px 0px' },
     );
 
     io.observe(el);
@@ -51,7 +61,7 @@ export function Reveal({ children, className, delay, as = 'div', style, ...rest 
   return (
     <Tag
       ref={ref}
-      data-reveal=""
+      data-reveal={direction === 'up' ? '' : direction}
       className={cn(className)}
       style={{ transitionDelay: delay, ...style }}
       {...rest}

@@ -73,7 +73,7 @@ export default async function MemberDetailPage({ params }: Props) {
   );
 
   return (
-    <div className="container mx-auto max-w-4xl px-4 py-12">
+    <div className="mx-auto max-w-[960px] px-6 pb-28 pt-14 md:px-10">
       {/* Profile header */}
       <div className="flex flex-col gap-8 md:flex-row">
         <div className="shrink-0">
@@ -82,14 +82,14 @@ export default async function MemberDetailPage({ params }: Props) {
             name={member.fullName}
             sizes="200px"
             priority
-            className="w-56"
+            className="press-tile anim-blur-in w-56"
           />
         </div>
 
         <div className="flex-1 space-y-4">
           <div>
-            <h1 className="font-serif text-3xl font-bold">{member.fullName}</h1>
-            <div className="mt-2 flex flex-wrap gap-2">
+            <h1 className="anim-blur-in type-title text-cg-fg">{member.fullName}</h1>
+            <div className="mt-4 flex flex-wrap gap-2">
               <Badge variant="default">{MEMBER_ROLE_LABELS[member.role] ?? member.role}</Badge>
               <Badge variant={member.status === 'active' ? 'success' : 'outline'}>
                 {MEMBER_STATUS_LABELS[member.status] ?? member.status}
@@ -97,7 +97,7 @@ export default async function MemberDetailPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap gap-4 text-sm text-cg-fg2">
             <span className="flex items-center gap-1.5">
               <Calendar className="h-4 w-4" />
               Joined {formatDate(member.joinedDate, 'MMMM yyyy')}
@@ -111,13 +111,18 @@ export default async function MemberDetailPage({ params }: Props) {
           </div>
 
           {member.biography && (
-            <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{member.biography}</p>
+            <p className="type-body whitespace-pre-line text-cg-fg2">{member.biography}</p>
           )}
 
           {/* Social links */}
           <div className="flex flex-wrap gap-2">
             {member.socialLinks.email && (
-              <Button asChild variant="outline" size="sm">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-full border-cg-hover bg-transparent text-cg-fg hover:bg-cg-raised"
+              >
                 <Link href={`mailto:${member.socialLinks.email}`}>
                   <Mail className="h-4 w-4" />
                   Email
@@ -125,7 +130,12 @@ export default async function MemberDetailPage({ params }: Props) {
               </Button>
             )}
             {member.socialLinks.googleScholar && (
-              <Button asChild variant="outline" size="sm">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-full border-cg-hover bg-transparent text-cg-fg hover:bg-cg-raised"
+              >
                 <Link href={member.socialLinks.googleScholar} target="_blank" rel="noopener noreferrer">
                   <GraduationCap className="h-4 w-4" />
                   Google Scholar
@@ -133,7 +143,12 @@ export default async function MemberDetailPage({ params }: Props) {
               </Button>
             )}
             {member.socialLinks.orcid && (
-              <Button asChild variant="outline" size="sm">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-full border-cg-hover bg-transparent text-cg-fg hover:bg-cg-raised"
+              >
                 <Link href={member.socialLinks.orcid} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-4 w-4" />
                   ORCID
@@ -141,7 +156,12 @@ export default async function MemberDetailPage({ params }: Props) {
               </Button>
             )}
             {member.socialLinks.linkedin && (
-              <Button asChild variant="outline" size="sm">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-full border-cg-hover bg-transparent text-cg-fg hover:bg-cg-raised"
+              >
                 <Link href={member.socialLinks.linkedin} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-4 w-4" />
                   LinkedIn
@@ -149,7 +169,12 @@ export default async function MemberDetailPage({ params }: Props) {
               </Button>
             )}
             {member.socialLinks.personalSite && (
-              <Button asChild variant="outline" size="sm">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-full border-cg-hover bg-transparent text-cg-fg hover:bg-cg-raised"
+              >
                 <Link href={member.socialLinks.personalSite} target="_blank" rel="noopener noreferrer">
                   <ExternalLink className="h-4 w-4" />
                   Personal Site
@@ -163,14 +188,14 @@ export default async function MemberDetailPage({ params }: Props) {
       {/* Works by type */}
       {works.length > 0 && (
         <div className="mt-16 space-y-12">
-          <h2 className="font-serif text-2xl font-bold">Authored Works</h2>
+          <h2 className="type-section text-cg-fg">Authored Works</h2>
           {WORK_TYPE_ORDER.filter((type) => worksByType[type].length > 0).map((type) => (
             <div key={type}>
-              <h3 className="mb-4 flex items-center gap-2 font-serif text-xl font-semibold">
-                <BookOpen className="h-5 w-5 text-primary" />
+              <h3 className="type-headline mb-5 flex items-center gap-2 text-cg-fg">
+                <BookOpen className="h-5 w-5 text-cg-hero" />
                 {WORK_TYPE_LABELS[type]}s ({worksByType[type].length})
               </h3>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 {worksByType[type].map((work) => (
                   <WorkCard key={work._id} work={work} />
                 ))}
@@ -181,7 +206,7 @@ export default async function MemberDetailPage({ params }: Props) {
       )}
 
       {works.length === 0 && (
-        <div className="mt-16 text-center text-muted-foreground">
+        <div className="type-body mt-16 text-center text-cg-fg2">
           <User className="mx-auto mb-3 h-12 w-12 opacity-30" />
           <p>No published works yet.</p>
         </div>

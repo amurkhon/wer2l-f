@@ -13,10 +13,10 @@ function FilterSkeleton() {
 
 function WorksGridSkeleton() {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="rounded-[20px] border p-3.5">
-          <Skeleton className="aspect-video w-full rounded-[14px]" />
+        <div key={i} className="card-cg p-3">
+          <Skeleton className="aspect-video w-full rounded-[16px]" />
           <div className="space-y-2 px-2.5 pb-2.5 pt-5">
             <Skeleton className="h-5 w-full" />
             <Skeleton className="h-4 w-3/4" />
@@ -30,13 +30,14 @@ function WorksGridSkeleton() {
 
 export default function WorksLoading() {
   return (
-    <div className="container mx-auto px-4 py-12">
-      <div className="mb-8">
-        <Skeleton className="h-10 w-32" />
-        <Skeleton className="mt-2 h-5 w-48" />
+    <div className="mx-auto max-w-[1080px] px-6 pb-28 pt-20 md:px-10">
+      <div className="mb-12">
+        <Skeleton className="h-3 w-28" />
+        <Skeleton className="mt-4 h-14 w-80 max-w-full" />
+        <Skeleton className="mt-5 h-5 w-96 max-w-full" />
       </div>
       <div className="flex flex-col gap-8 md:flex-row">
-        <aside className="shrink-0 md:w-56">
+        <aside className="shrink-0 md:w-52">
           <FilterSkeleton />
         </aside>
         <div className="flex-1">

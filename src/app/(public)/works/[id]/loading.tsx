@@ -3,11 +3,11 @@ import { Separator } from '@/components/ui/separator';
 
 export default function WorkDetailLoading() {
   return (
-    <div className="container mx-auto max-w-4xl px-4 py-12">
-      <Skeleton className="mb-6 h-8 w-32" />
+    <div className="mx-auto max-w-[860px] px-6 pb-28 pt-12 md:px-10">
+      <Skeleton className="mb-8 h-8 w-36 rounded-full" />
 
       {/* Cover image */}
-      <Skeleton className="mb-8 h-72 w-full rounded-xl" />
+      <Skeleton className="mb-10 aspect-video w-full rounded-[16px]" />
 
       {/* Badges */}
       <div className="flex gap-2">
@@ -17,8 +17,8 @@ export default function WorkDetailLoading() {
       </div>
 
       {/* Title */}
-      <Skeleton className="mt-4 h-10 w-full" />
-      <Skeleton className="mt-2 h-10 w-3/4" />
+      <Skeleton className="mt-6 h-12 w-full" />
+      <Skeleton className="mt-2 h-12 w-3/4" />
 
       {/* Meta */}
       <div className="mt-4 flex gap-4">
@@ -26,13 +26,13 @@ export default function WorkDetailLoading() {
         <Skeleton className="h-5 w-20" />
       </div>
 
-      <Separator className="my-8" />
+      <Separator className="my-10 bg-cg-hover" />
 
       {/* Authors */}
       <div className="mb-8">
         <Skeleton className="mb-4 h-7 w-24" />
         {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="flex items-center gap-3 p-2">
+          <div key={i} className="flex items-center gap-3 p-3">
             <Skeleton className="h-10 w-10 rounded-full" />
             <div className="space-y-1">
               <Skeleton className="h-4 w-36" />
