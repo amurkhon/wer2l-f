@@ -4,9 +4,10 @@ import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { FileText, Loader2, Upload, X } from 'lucide-react';
+import { FileText, ImageIcon, Loader2, Upload, X } from 'lucide-react';
 import { workSchema, type WorkFormValues } from '@/lib/schemas';
 import type { Work } from '@/types';
+import { SafeImage } from '@/components/shared/SafeImage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -36,10 +37,34 @@ interface WorkFormProps {
   children?: React.ReactNode;
 }
 
+// Must match PDF_MAX_BYTES in the backend's uploads.service.ts.
+const PDF_MAX_MB = 50;
+
+/** Uploads a file to POST /uploads/{kind} and returns its stored /uploads/... path. */
+async function uploadFile(kind: 'image' | 'pdf', file: File): Promise<string> {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const res = await fetch(`/api/proxy/uploads/${kind}`, {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const err = (await res.json().catch(() => ({}))) as { message?: unknown };
+    const fallback = kind === 'pdf' ? 'Could not upload PDF' : 'Could not upload image';
+    throw new Error(typeof err.message === 'string' ? err.message : fallback);
+  }
+  const { fileUrl } = await res.json() as { fileUrl: string };
+  return fileUrl;
+}
+
 export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
   const router = useRouter();
   const pdfInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
   const [uploadingPdf, setUploadingPdf] = useState(false);
+  const [uploadingCover, setUploadingCover] = useState(false);
 
   const form = useForm<WorkFormValues>({
     resolver: zodResolver(workSchema),
@@ -64,20 +89,11 @@ export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
 
     setUploadingPdf(true);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const res = await fetch('/api/proxy/uploads/pdf', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!res.ok) {
-        const err = (await res.json().catch(() => ({}))) as { message?: unknown };
-        throw new Error(typeof err.message === 'string' ? err.message : 'Could not upload PDF');
+      if (file.size > PDF_MAX_MB * 1024 * 1024) {
+        const sizeMb = (file.size / 1024 / 1024).toFixed(1);
+        throw new Error(`This PDF is ${sizeMb} MB; the limit is ${PDF_MAX_MB} MB.`);
       }
-      const { fileUrl } = await res.json() as { fileUrl: string };
-      form.setValue('pdfFile', fileUrl, { shouldDirty: true });
+      form.setValue('pdfFile', await uploadFile('pdf', file), { shouldDirty: true });
     } catch (err) {
       toast({
         title: 'Upload failed',
@@ -90,6 +106,26 @@ export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
     }
   };
 
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingCover(true);
+    try {
+      form.setValue('coverImage', await uploadFile('image', file), { shouldDirty: true });
+    } catch (err) {
+      toast({
+        title: 'Upload failed',
+        description: err instanceof Error ? err.message : 'Could not upload image',
+        variant: 'destructive',
+      });
+    } finally {
+      setUploadingCover(false);
+      if (coverInputRef.current) coverInputRef.current.value = '';
+    }
+  };
+
+  const coverImage = form.watch('coverImage');
   const pdfFile = form.watch('pdfFile');
   // Stored names are "<uuid>-<original name>.pdf"; show only the original part.
   const pdfFileName = pdfFile?.split('/').pop()?.replace(/^[0-9a-f-]{36}-/i, '');
@@ -215,12 +251,66 @@ export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
             <FormField
               control={form.control}
               name="coverImage"
-              render={({ field }) => (
+              render={() => (
                 <FormItem className="sm:col-span-2">
-                  <FormLabel>Cover Image URL</FormLabel>
+                  <FormLabel>Cover Image</FormLabel>
                   <FormControl>
-                    <Input placeholder="https://..." {...field} value={field.value ?? ''} />
+                    <div className="space-y-3">
+                      <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-lg border bg-muted">
+                        {/* key resets SafeImage's error state when a new image replaces a broken one */}
+                        <SafeImage
+                          key={coverImage}
+                          src={coverImage}
+                          alt="Cover preview"
+                          fill
+                          sizes="448px"
+                          className="h-full w-full object-contain"
+                          unoptimized
+                          fallback={
+                            <div className="flex h-full w-full items-center justify-center">
+                              <ImageIcon className="h-10 w-10 text-muted-foreground/30" />
+                            </div>
+                          }
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          disabled={uploadingCover}
+                          onClick={() => coverInputRef.current?.click()}
+                        >
+                          {uploadingCover
+                            ? <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            : <Upload className="mr-2 h-4 w-4" />}
+                          {uploadingCover ? 'Uploading…' : coverImage ? 'Replace Image' : 'Upload Image'}
+                        </Button>
+                        {coverImage && (
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon"
+                            aria-label="Remove cover image"
+                            className="text-destructive hover:text-destructive"
+                            onClick={() => form.setValue('coverImage', '', { shouldDirty: true })}
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        )}
+                      </div>
+                      <input
+                        ref={coverInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/gif,image/webp"
+                        className="sr-only"
+                        onChange={handleCoverUpload}
+                      />
+                    </div>
                   </FormControl>
+                  <FormDescription>
+                    Shown on the publication card and page. JPEG, PNG, GIF or WebP.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -281,7 +371,7 @@ export function WorkForm({ work, onSubmit, children }: WorkFormProps) {
                     </div>
                   </FormControl>
                   <FormDescription>
-                    Visitors can download this file from the publication page.
+                    Visitors can download this file from the publication page. Max {PDF_MAX_MB} MB.
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
